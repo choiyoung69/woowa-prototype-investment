@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 그날의 나에게 — 랜딩 페이지
 
-## Getting Started
+과거 시장 사건을 다시 체험하는 투자 심리 학습 서비스의 가설 검증용 랜딩 페이지입니다.
+Next.js(App Router) + Tailwind CSS로 만들었고, 이메일 신청은 Vercel Postgres에 저장됩니다.
 
-First, run the development server:
+## 로컬 개발
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`http://localhost:3000` 에서 확인할 수 있습니다. 로컬에서는 `POSTGRES_URL`이 없으면
+`/api/subscribe` 호출이 500을 반환합니다(폼에는 "잠시 후 다시 시도해주세요" 메시지가
+노출됩니다). DB까지 로컬에서 테스트하려면 아래 3번 항목을 먼저 진행하세요.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Vercel 배포
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Vercel 프로젝트 생성
 
-## Learn More
+이 저장소를 GitHub에 올린 뒤, [Vercel 대시보드](https://vercel.com/new)에서 Import 합니다.
 
-To learn more about Next.js, take a look at the following resources:
+- **Root Directory**: `landing` 으로 지정 (모노레포이므로 반드시 설정)
+- Framework Preset은 Next.js가 자동으로 인식됩니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Postgres 연결
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Vercel 프로젝트의 **Storage** 탭에서 Postgres(또는 Neon) 데이터베이스를 생성하고
+이 프로젝트에 연결하세요. 연결하면 `POSTGRES_URL` 등 필요한 환경변수가 자동으로
+프로젝트에 주입됩니다. 테이블은 `/api/subscribe`가 첫 호출 시 자동으로 생성합니다
+(`subscribers` 테이블, `email` unique).
 
-## Deploy on Vercel
+### 3. 로컬에서 같은 DB로 테스트하고 싶다면
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm i -g vercel
+vercel link
+vercel env pull .env.local
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 4. 배포
+
+Vercel 프로젝트를 GitHub에 연결해두면 `main` 브랜치에 push할 때마다 자동 배포됩니다.
+수동 배포는 `vercel --prod` 로도 가능합니다.
+
+## 수집된 이메일 확인
+
+Vercel 대시보드의 Storage → 연결한 DB → Query 탭에서 아래 쿼리로 확인할 수 있습니다.
+
+```sql
+select email, source, created_at from subscribers order by created_at desc;
+```
