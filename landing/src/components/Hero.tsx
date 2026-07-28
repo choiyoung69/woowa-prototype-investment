@@ -17,7 +17,7 @@ export function Hero() {
         </span>
 
         <h1 className="mt-6 text-4xl font-bold leading-tight tracking-tight text-balance sm:text-5xl">
-          <span className="text-down">코로나 폭락</span>, 그날의
+          <span className="text-down">IMF 외환위기</span>, 그날의
           <br />
           당신이라면 어떤 선택을 했을까요?
         </h1>
@@ -30,7 +30,7 @@ export function Hero() {
 
         <div className="mt-10 flex flex-col items-center gap-4">
           <Link
-            href="/scenario/covid-crash"
+            href="/scenario/imf-crisis"
             className="rounded-lg bg-accent px-8 py-4 text-base font-semibold text-accent-foreground transition hover:brightness-110"
           >
             지금 체험하기 →

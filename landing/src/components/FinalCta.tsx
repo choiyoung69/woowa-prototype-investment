@@ -8,8 +8,8 @@ export function FinalCta() {
           &ldquo;패닉셀 안 하려고 했는데, 결국 했다&rdquo;
         </h2>
         <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
-          지금 준비 중인 첫 시나리오는 코로나 폭락, 밈스톡 급등, 금리인상기예요.
-          가장 먼저 체험해보고 싶다면 이메일을 남겨주세요.
+          지금 IMF 외환위기와 코로나 폭락을 체험할 수 있어요. 밈스톡 급등, 금리인상기도
+          준비 중이에요. 다음 시나리오 소식을 가장 먼저 받고 싶다면 이메일을 남겨주세요.
         </p>
 
         <div className="mt-8">
