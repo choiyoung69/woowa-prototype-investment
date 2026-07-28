@@ -67,9 +67,27 @@ const ownerConcepts = [
 const workerKnowledge = {
   summary: ["환율 급등", "기업 부실 확산", "고용·투자 동시 위험"],
   keywords: [
-    { term: "부채비율", meaning: "빚 의존도" },
-    { term: "구조조정", meaning: "비용·인력 축소" },
-    { term: "분산투자", meaning: "위험 나누기" },
+    {
+      term: "부채비율",
+      meaning: "빚 의존도",
+      detail: "회사가 자기 돈보다 빚으로 얼마나 버티는지 보는 지표예요.",
+      pastSignal: "1997년에는 빚이 많은 기업부터 자금줄이 막혔어요.",
+      todaySignal: "고금리·고환율 때도 이자와 원가 부담이 먼저 커져요.",
+    },
+    {
+      term: "구조조정",
+      meaning: "비용·인력 축소",
+      detail: "회사가 살아남기 위해 사업, 비용, 인력을 줄이는 과정이에요.",
+      pastSignal: "IMF 요청 이후 기업 매각과 감원이 빠르게 번졌어요.",
+      todaySignal: "경기가 식으면 채용 축소와 조직 개편 뉴스가 늘어요.",
+    },
+    {
+      term: "분산투자",
+      meaning: "위험 나누기",
+      detail: "월급과 투자금이 같은 위험에 묶이지 않게 나누는 방식이에요.",
+      pastSignal: "회사도 흔들리고 주식도 빠지면 한 번에 타격을 받아요.",
+      todaySignal: "내 직업이 민감한 업종이면 투자 자산은 더 분리해 봐야 해요.",
+    },
   ],
   currentParallels: [
     {
@@ -84,9 +102,27 @@ const workerKnowledge = {
 const studentKnowledge = {
   summary: ["채용 냉각", "생활비 압박", "비상금 우선순위"],
   keywords: [
-    { term: "환율", meaning: "달러 가격" },
-    { term: "기회비용", meaning: "포기한 선택의 가치" },
-    { term: "비상금", meaning: "버틸 시간" },
+    {
+      term: "환율",
+      meaning: "달러 가격",
+      detail: "원화로 달러를 살 때 드는 가격이에요.",
+      pastSignal: "1997년 환율 급등은 유학비, 수입물가, 기업 비용을 흔들었어요.",
+      todaySignal: "고환율은 해외 결제, 여행비, 수입 제품 가격에도 바로 보여요.",
+    },
+    {
+      term: "기회비용",
+      meaning: "포기한 선택의 가치",
+      detail: "투자에 돈을 쓰면 생활비나 취업 준비 기간을 포기할 수 있어요.",
+      pastSignal: "위기 때 성급한 매수는 버틸 시간을 줄였어요.",
+      todaySignal: "취업 시장이 차가울수록 현금 여유가 선택지를 넓혀요.",
+    },
+    {
+      term: "비상금",
+      meaning: "버틸 시간",
+      detail: "소득이 끊겨도 생활을 유지하게 해주는 현금이에요.",
+      pastSignal: "IMF 이후 채용이 얼어붙으면서 현금의 가치가 커졌어요.",
+      todaySignal: "청년 고용이 둔화될 때는 수익률보다 생존 기간이 먼저예요.",
+    },
   ],
   currentParallels: [
     {
@@ -101,9 +137,27 @@ const studentKnowledge = {
 const ownerKnowledge = {
   summary: ["고금리 부담", "소비 위축", "운영자금 방어"],
   keywords: [
-    { term: "현금흐름", meaning: "들어오고 나가는 돈" },
-    { term: "이자 부담", meaning: "대출 비용" },
-    { term: "소비 위축", meaning: "손님 지출 감소" },
+    {
+      term: "현금흐름",
+      meaning: "들어오고 나가는 돈",
+      detail: "매출에서 재료비, 임대료, 인건비, 이자를 빼고 남는 흐름이에요.",
+      pastSignal: "1998년에는 매출보다 버틸 현금이 더 중요한 국면이었어요.",
+      todaySignal: "매출이 조금 늘어도 비용이 더 늘면 실제로는 더 힘들 수 있어요.",
+    },
+    {
+      term: "이자 부담",
+      meaning: "대출 비용",
+      detail: "대출을 유지하기 위해 매달 내야 하는 비용이에요.",
+      pastSignal: "고금리는 사업자금과 투자 판단을 동시에 압박했어요.",
+      todaySignal: "연체 뉴스가 늘면 대출 상환 부담이 커졌다는 신호예요.",
+    },
+    {
+      term: "소비 위축",
+      meaning: "손님 지출 감소",
+      detail: "사람들이 불안해서 외식, 쇼핑, 여행 지출을 줄이는 현상이에요.",
+      pastSignal: "위기 때 손님이 줄면 주가 반등보다 가게 생존이 먼저였어요.",
+      todaySignal: "내수 둔화 뉴스는 자영업 매출과 투자심리를 같이 흔들어요.",
+    },
   ],
   currentParallels: [
     {

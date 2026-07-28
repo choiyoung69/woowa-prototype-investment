@@ -29,6 +29,9 @@ export interface KeyConcept {
 export interface LearningKeyword {
   term: string;
   meaning: string;
+  detail?: string;
+  pastSignal?: string;
+  todaySignal?: string;
 }
 
 export interface CurrentParallel {
