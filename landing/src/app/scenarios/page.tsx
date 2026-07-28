@@ -16,16 +16,16 @@ const marketTiles = [
 
 const steps = [
   {
-    title: "당시 뉴스 읽기",
-    description: "결과를 숨긴 채 그날 공개된 정보만 확인합니다.",
+    title: "뉴스",
+    description: "당시 정보만",
   },
   {
-    title: "매수·매도·관망 선택",
-    description: "금액과 함께 판단 이유를 짧게 남깁니다.",
+    title: "판단",
+    description: "매수·매도·관망",
   },
   {
-    title: "실제 결과로 복기",
-    description: "내가 놓친 신호와 감정 패턴을 다시 봅니다.",
+    title: "복기",
+    description: "놓친 신호 확인",
   },
 ];
 
@@ -90,6 +90,9 @@ function ScenarioCard({
   scenario: (typeof scenarios)[number];
   index: number;
 }) {
+  const firstDay = scenario.days[0]?.date.replace("1997-", "").replace("1998-", "");
+  const summary = scenario.knowledge?.summary ?? [];
+  const keywords = scenario.knowledge?.keywords ?? [];
   const tones = [
     "bg-[#e8f3ff] text-accent",
     "bg-[#fff3d6] text-[#b77900]",
@@ -100,7 +103,7 @@ function ScenarioCard({
   return (
     <Link
       href={`/scenario/${scenario.id}`}
-      className="block rounded-[12px] border border-border bg-surface p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      className="block rounded-[12px] border border-border bg-surface p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-5"
     >
       <div className="flex items-start gap-4">
         <div
@@ -114,7 +117,7 @@ function ScenarioCard({
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-xs font-bold text-muted">
-                {scenario.days.length}일 체험 · {scenario.startingCash.toLocaleString()}원
+                {firstDay} 시작 · {scenario.startingCash.toLocaleString()}원
               </p>
               <h2 className="mt-1 text-lg font-bold leading-6">{scenario.title}</h2>
             </div>
@@ -122,9 +125,30 @@ function ScenarioCard({
               시작
             </span>
           </div>
-          <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted">
-            {scenario.subtitle}
-          </p>
+          {summary.length > 0 && (
+            <div className="mt-3 grid grid-cols-3 gap-1.5">
+              {summary.map((item) => (
+                <span
+                  key={item}
+                  className="break-keep rounded-[9px] bg-background px-2 py-2 text-center text-[11px] font-black text-foreground"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          )}
+          {keywords.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {keywords.slice(0, 3).map((keyword) => (
+                <span
+                  key={keyword.term}
+                  className="rounded-full bg-surface-2 px-2 py-1 text-[11px] font-black text-muted"
+                >
+                  {keyword.term}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </Link>
@@ -148,18 +172,12 @@ export default function ScenariosPage() {
           <div className="rounded-[16px] bg-surface p-6 shadow-sm sm:p-8">
             <p className="text-sm font-bold text-accent">오늘 바로 체험할 경제 사건</p>
             <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-              IMF 외환위기,
-              <br />
-              그날의 정보만 보고 판단해보세요
+              IMF 외환위기 체험
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
-              당시 뉴스를 읽고 매수, 매도, 관망을 선택합니다. 선택 이유를 남긴 뒤
-              실제 결과와 비교하며 내 판단 습관을 복기합니다.
-            </p>
 
-            <div className="mt-7 grid gap-3 sm:grid-cols-3">
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {marketTiles.map((tile) => (
-                <div key={tile.label} className="rounded-[12px] bg-background p-4">
+                <div key={tile.label} className="rounded-[12px] bg-background p-3 sm:p-4">
                   <p className="text-xs font-bold text-muted">{tile.label}</p>
                   <p className="mt-2 text-xl font-bold">{tile.value}</p>
                   <p
@@ -192,26 +210,25 @@ export default function ScenariosPage() {
 
           <div className="rounded-[16px] bg-[#191f28] p-6 text-white shadow-sm sm:p-7">
             <p className="text-sm font-bold text-white/60">체험 흐름</p>
-            <div className="mt-5 space-y-4">
+            <div className="mt-5 grid gap-3">
               {steps.map((step, index) => (
-                <div key={step.title} className="flex gap-4">
+                <div key={step.title} className="flex items-center gap-4 rounded-[12px] bg-white/10 p-4">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-[#191f28]">
                     {index + 1}
                   </div>
                   <div>
                     <h2 className="font-bold">{step.title}</h2>
-                    <p className="mt-1 text-sm leading-6 text-white/60">
-                      {step.description}
-                    </p>
+                    <p className="text-sm font-bold text-white/50">{step.description}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="mt-7 rounded-[12px] bg-white/10 p-4">
-              <p className="text-sm font-bold">목표는 수익률 경쟁이 아니에요</p>
-              <p className="mt-2 text-sm leading-6 text-white/60">
-                왜 그렇게 판단했는지, 무엇을 놓쳤는지 남기는 것이 핵심입니다.
-              </p>
+            <div className="mt-5 grid grid-cols-3 gap-2">
+              {["요약", "키워드", "현재뉴스"].map((item) => (
+                <div key={item} className="break-keep rounded-[10px] bg-white px-3 py-3 text-center text-sm font-black text-[#191f28]">
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
         </section>

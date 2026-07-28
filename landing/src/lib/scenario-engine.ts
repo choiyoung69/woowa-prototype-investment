@@ -26,6 +26,24 @@ export interface KeyConcept {
   description: string;
 }
 
+export interface LearningKeyword {
+  term: string;
+  meaning: string;
+}
+
+export interface CurrentParallel {
+  title: string;
+  summary: string;
+  source: string;
+  href: string;
+}
+
+export interface ScenarioKnowledge {
+  summary: string[];
+  keywords: LearningKeyword[];
+  currentParallels: CurrentParallel[];
+}
+
 export interface Scenario {
   id: string;
   title: string;
@@ -41,6 +59,8 @@ export interface Scenario {
   persona?: string;
   /** Role-specific learning goals shown before each scenario run. */
   learningGoals?: string[];
+  /** Compact knowledge pack shown before and during the scenario. */
+  knowledge?: ScenarioKnowledge;
   /** Real economic concepts tied to this scenario, shown in the result report. */
   keyConcepts?: KeyConcept[];
 }

@@ -223,14 +223,40 @@ function MissionStep({
         <h2 className="mt-2 text-2xl font-black">
           오늘은 {formatKoreanDate(day.date)}입니다
         </h2>
-        <p className="mt-3 text-base leading-7 text-muted">
-          당시 투자자가 되었다고 생각하고 오늘 공개된 정보만 확인하세요.
-          결과를 모르는 상태에서 투자 결정을 내려야 합니다.
+        <p className="mt-3 text-sm font-bold leading-6 text-muted">
+          뉴스 확인 → 판단 → 복기
         </p>
+        {scenario.knowledge && (
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            {scenario.knowledge.summary.map((item) => (
+              <div
+                key={item}
+                className="break-keep rounded-[10px] bg-background px-2 py-2.5 text-center text-xs font-black sm:text-sm"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        )}
+        {scenario.knowledge?.currentParallels[0] && (
+          <a
+            href={scenario.knowledge.currentParallels[0].href}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 flex min-w-0 items-center gap-3 rounded-[10px] bg-surface-2 px-3 py-2.5 transition hover:bg-[#e8f3ff]"
+          >
+            <span className="shrink-0 rounded-full bg-white px-2 py-1 text-[11px] font-black text-accent">
+              현재
+            </span>
+            <span className="min-w-0 truncate text-xs font-black sm:text-sm">
+              {scenario.knowledge.currentParallels[0].title}
+            </span>
+          </a>
+        )}
         {scenario.persona && dayNumber === 1 && (
           <div className="mt-5 rounded-[12px] bg-[#e8f3ff] p-4">
             <p className="text-xs font-black text-accent">당신의 상황</p>
-            <p className="mt-1 text-sm leading-6">{scenario.persona}</p>
+            <p className="mt-1 line-clamp-1 text-sm leading-6">{scenario.persona}</p>
           </div>
         )}
         <button
@@ -243,22 +269,53 @@ function MissionStep({
       </section>
 
       <section className="min-w-0 rounded-[12px] border border-border bg-background p-6">
-        <p className="text-sm font-bold text-muted">학습 목표</p>
-        <ul className="mt-5 space-y-4">
-          {(scenario.learningGoals ?? [
-            "당시 뉴스 3개 이상 확인하기",
-            "시장 지표가 왜 움직였는지 추론하기",
-            "선택 이유를 한 문장 이상 기록하기",
-          ]).map((goal) => (
-            <li key={goal} className="flex gap-3 text-sm font-bold text-muted">
-              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full border border-border text-[10px]">
-                ✓
-              </span>
-              {goal}
-            </li>
-          ))}
-        </ul>
+        <KnowledgeSnapshot scenario={scenario} />
       </section>
+    </div>
+  );
+}
+
+function KnowledgeSnapshot({ scenario }: { scenario: Scenario }) {
+  const summary = scenario.knowledge?.summary ?? [];
+  const keywords = scenario.knowledge?.keywords ?? [];
+  const current = scenario.knowledge?.currentParallels[0];
+
+  return (
+    <div>
+      <p className="text-sm font-black text-muted">한눈 요약</p>
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        {summary.map((item) => (
+          <div key={item} className="rounded-[10px] bg-surface px-3 py-3 text-center">
+            <p className="break-keep text-xs font-black sm:text-sm">{item}</p>
+          </div>
+        ))}
+      </div>
+
+      <p className="mt-5 text-sm font-black text-muted">키워드</p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {keywords.map((keyword) => (
+          <span
+            key={keyword.term}
+            className="rounded-full bg-[#e8f3ff] px-3 py-2 text-sm font-black text-accent"
+            title={keyword.meaning}
+          >
+            {keyword.term}
+          </span>
+        ))}
+      </div>
+
+      {current && (
+        <a
+          href={current.href}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-5 block rounded-[12px] border border-border bg-surface p-4 transition hover:border-accent"
+        >
+          <p className="text-xs font-black text-muted">현재 비슷한 뉴스</p>
+          <p className="mt-1 line-clamp-1 text-sm font-black">{current.title}</p>
+          <p className="mt-1 text-xs font-bold text-accent">{current.source}</p>
+        </a>
+      )}
     </div>
   );
 }
@@ -284,6 +341,36 @@ function NewsStep({
           {scenario.unitLabel} 1좌 {day.price.toLocaleString()}원
         </p>
       </div>
+
+      {scenario.knowledge && (
+        <div className="grid gap-3 md:grid-cols-[1fr_1fr_1.1fr]">
+          <div className="rounded-[12px] bg-[#e8f3ff] p-4">
+            <p className="text-xs font-black text-accent">내용 요약</p>
+            <p className="mt-2 text-lg font-black">{scenario.knowledge.summary.join(" → ")}</p>
+          </div>
+          <div className="rounded-[12px] bg-surface p-4">
+            <p className="text-xs font-black text-muted">오늘 볼 키워드</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {scenario.knowledge.keywords.map((keyword) => (
+                <span key={keyword.term} className="rounded-full bg-surface-2 px-2.5 py-1 text-xs font-black">
+                  {keyword.term}
+                </span>
+              ))}
+            </div>
+          </div>
+          <a
+            href={scenario.knowledge.currentParallels[0]?.href}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-[12px] bg-surface p-4 transition hover:bg-surface-2"
+          >
+            <p className="text-xs font-black text-muted">현재 비슷한 뉴스</p>
+            <p className="mt-2 line-clamp-2 text-sm font-black">
+              {scenario.knowledge.currentParallels[0]?.title}
+            </p>
+          </a>
+        </div>
+      )}
 
       <div className="grid gap-5 lg:grid-cols-[1fr_280px]">
         <section className="overflow-hidden rounded-[12px] border border-border bg-surface">

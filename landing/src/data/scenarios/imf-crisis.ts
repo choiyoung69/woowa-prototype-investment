@@ -64,6 +64,57 @@ const ownerConcepts = [
   },
 ];
 
+const workerKnowledge = {
+  summary: ["환율 급등", "기업 부실 확산", "고용·투자 동시 위험"],
+  keywords: [
+    { term: "부채비율", meaning: "빚 의존도" },
+    { term: "구조조정", meaning: "비용·인력 축소" },
+    { term: "분산투자", meaning: "위험 나누기" },
+  ],
+  currentParallels: [
+    {
+      title: "고환율은 기업 원가와 고용에도 부담",
+      summary: "2026년에도 고환율이 수입 원가와 기업 비용을 자극한다는 분석이 나왔어요.",
+      source: "KB의 생각 · 2026 환율 전망",
+      href: "https://kbthink.com/investment/issues/2026-krw-usd-outlook.html",
+    },
+  ],
+};
+
+const studentKnowledge = {
+  summary: ["채용 냉각", "생활비 압박", "비상금 우선순위"],
+  keywords: [
+    { term: "환율", meaning: "달러 가격" },
+    { term: "기회비용", meaning: "포기한 선택의 가치" },
+    { term: "비상금", meaning: "버틸 시간" },
+  ],
+  currentParallels: [
+    {
+      title: "청년 취업자 감소가 장기화",
+      summary: "2026년 6월 청년층 취업자가 전년 대비 19.7만명 줄었다는 보도가 있었어요.",
+      source: "한국경제 · 2026.07.15",
+      href: "https://www.hankyung.com/article/2026071576421",
+    },
+  ],
+};
+
+const ownerKnowledge = {
+  summary: ["고금리 부담", "소비 위축", "운영자금 방어"],
+  keywords: [
+    { term: "현금흐름", meaning: "들어오고 나가는 돈" },
+    { term: "이자 부담", meaning: "대출 비용" },
+    { term: "소비 위축", meaning: "손님 지출 감소" },
+  ],
+  currentParallels: [
+    {
+      title: "자영업자 연체 빚 증가",
+      summary: "2026년 1분기 개인사업자 대출 연체가 다시 늘고 영업이익률도 악화됐어요.",
+      source: "한국경제 · 2026.06.23",
+      href: "https://www.hankyung.com/article/2026062316327",
+    },
+  ],
+};
+
 const workerDays = [
   {
     date: "1997-11-19",
@@ -353,6 +404,7 @@ export const imfCrisisWorkerScenario: Scenario = {
     "구조조정 우려 속에서 현금과 투자 비중을 나눠 판단하기",
     "월급 안정성에 대한 믿음이 투자 판단을 흐리는지 기록하기",
   ],
+  knowledge: workerKnowledge,
   keyConcepts: workerConcepts,
   days: workerDays,
 };
@@ -372,6 +424,7 @@ export const imfCrisisStudentScenario: Scenario = {
     "전 재산이 작을 때 투자금과 비상금을 어떻게 구분할지 판단하기",
     "저가 매수 욕심과 현금 방어 사이에서 선택 이유 남기기",
   ],
+  knowledge: studentKnowledge,
   keyConcepts: studentConcepts,
   days: studentDays,
 };
@@ -391,6 +444,7 @@ export const imfCrisisOwnerScenario: Scenario = {
     "운영자금과 투자금을 분리해 위험 감당 범위 정하기",
     "시장 반등보다 사업 현금흐름이 먼저인지 판단하기",
   ],
+  knowledge: ownerKnowledge,
   keyConcepts: ownerConcepts,
   days: ownerDays,
 };
