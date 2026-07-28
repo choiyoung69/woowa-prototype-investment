@@ -392,45 +392,74 @@ function ScenarioTimeline({
 
 function MarketChart({ day }: { day: ScenarioDay }) {
   const chartPrices = makeSessionPrices(day);
-  const min = Math.min(...chartPrices);
-  const max = Math.max(...chartPrices);
-  const width = 720;
-  const height = 360;
-  const padX = 18;
-  const padY = 24;
+  const sessionLow = Math.min(day.low ?? Infinity, ...chartPrices);
+  const sessionHigh = Math.max(day.high ?? -Infinity, ...chartPrices);
+  const pricePadding = (sessionHigh - sessionLow || 1) * 0.1;
+  const min = sessionLow - pricePadding;
+  const max = sessionHigh + pricePadding;
+  const width = 760;
+  const height = 420;
+  const padX = 44;
+  const padRight = 64;
+  const chartTop = 26;
+  const chartBottom = 292;
+  const volumeTop = 322;
+  const volumeBottom = 392;
   const range = max - min || 1;
-  const stepX = (width - padX * 2) / (chartPrices.length - 1);
+  const stepX = (width - padX - padRight) / (chartPrices.length - 1);
   const toY = (price: number) =>
-    padY + (height - padY * 2) - ((price - min) / range) * (height - padY * 2);
+    chartBottom - ((price - min) / range) * (chartBottom - chartTop);
   const linePoints = chartPrices.map(
     (price, index) => `${padX + index * stepX},${toY(price)}`
   );
   const areaPoints = [
-    `${padX},${height - padY}`,
+    `${padX},${chartBottom}`,
     ...linePoints,
-    `${width - padX},${height - padY}`,
+    `${width - padRight},${chartBottom}`,
   ];
+  const priceTicks = Array.from({ length: 5 }, (_, index) => {
+    const value = max - (range / 4) * index;
+    return {
+      value,
+      y: toY(value),
+    };
+  });
+  const volumes = chartPrices.map((price, index) => {
+    const prev = chartPrices[Math.max(0, index - 1)];
+    return Math.max(0.2, Math.abs(price - prev) / range + index / chartPrices.length / 3);
+  });
+  const maxVolume = Math.max(...volumes);
+  const currentY = toY(day.price);
   const { diff, pct } = changeFromOpen(day);
   const trendUp = diff >= 0;
   const color = trendUp ? "var(--up)" : "var(--down)";
 
   return (
-    <div className="min-w-0">
-      <div className="flex flex-wrap items-end gap-3">
+    <div className="min-w-0 rounded-[14px] border border-border bg-surface p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-black text-muted">{scenarioMarketName}</p>
-          <p className="mt-1 text-4xl font-black tracking-tight">
-            {formatNumber(day.price)}
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-black text-muted">{scenarioMarketName}</p>
+            <span className="rounded-full bg-background px-2 py-1 text-[11px] font-black text-muted">
+              장중 재구성
+            </span>
+          </div>
+          <div className="mt-1 flex flex-wrap items-end gap-3">
+            <p className="text-4xl font-black tracking-tight">{formatNumber(day.price)}</p>
+            <p className={`pb-1 text-lg font-black ${trendUp ? "text-up" : "text-down"}`}>
+              {diff > 0 ? "+" : ""}
+              {formatNumber(diff)} ({pct > 0 ? "+" : ""}
+              {pct.toFixed(2)}%)
+            </p>
+          </div>
         </div>
-        <p className={`pb-1 text-lg font-black ${trendUp ? "text-up" : "text-down"}`}>
-          {diff > 0 ? "+" : ""}
-          {formatNumber(diff)} ({pct > 0 ? "+" : ""}
-          {pct.toFixed(2)}%)
-        </p>
+        <div className="rounded-[10px] bg-background px-3 py-2 text-right">
+          <p className="text-[11px] font-black text-muted">거래량</p>
+          <p className="mt-1 text-sm font-black">{day.tradingVolume ?? "-"}</p>
+        </div>
       </div>
 
-      <div className="mt-4 flex max-w-xs rounded-full bg-background p-1 text-xs font-black text-muted">
+      <div className="mt-4 flex max-w-sm rounded-full bg-background p-1 text-xs font-black text-muted">
         {["1일", "1주", "1개월", "3개월", "1년"].map((label, index) => (
           <span
             key={label}
@@ -443,34 +472,51 @@ function MarketChart({ day }: { day: ScenarioDay }) {
         ))}
       </div>
 
-      <div className="mt-5 rounded-[12px] bg-surface">
+      <div className="mt-4 overflow-hidden rounded-[12px] bg-background">
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          preserveAspectRatio="none"
-          className="h-[360px] w-full"
+          preserveAspectRatio="xMidYMid meet"
+          className="h-[420px] w-full"
           role="img"
           aria-label="오늘 시장 가격 흐름"
         >
-          {[0, 1, 2, 3, 4].map((line) => {
-            const y = padY + ((height - padY * 2) / 4) * line;
-            return (
-              <line
-                key={line}
-                x1={padX}
-                x2={width - padX}
-                y1={y}
-                y2={y}
-                stroke="var(--border)"
-                strokeWidth={1}
-              />
-            );
-          })}
           <defs>
             <linearGradient id="market-gradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={color} stopOpacity={0.24} />
               <stop offset="100%" stopColor={color} stopOpacity={0} />
             </linearGradient>
           </defs>
+          {priceTicks.map((tick) => (
+            <g key={tick.value}>
+              <line
+                x1={padX}
+                x2={width - padRight}
+                y1={tick.y}
+                y2={tick.y}
+                stroke="var(--border)"
+                strokeWidth={1}
+              />
+              <text
+                x={width - padRight + 10}
+                y={tick.y + 4}
+                fill="var(--muted)"
+                fontSize="12"
+                fontWeight="800"
+              >
+                {formatNumber(tick.value)}
+              </text>
+            </g>
+          ))}
+          <line
+            x1={padX}
+            x2={width - padRight}
+            y1={currentY}
+            y2={currentY}
+            stroke={color}
+            strokeDasharray="5 5"
+            strokeOpacity={0.45}
+            strokeWidth={1.4}
+          />
           <polygon points={areaPoints.join(" ")} fill="url(#market-gradient)" />
           <polyline
             points={linePoints.join(" ")}
@@ -480,13 +526,67 @@ function MarketChart({ day }: { day: ScenarioDay }) {
             strokeLinejoin="round"
             strokeWidth={3}
           />
+          <rect
+            x={width - padRight + 6}
+            y={Math.max(chartTop, Math.min(chartBottom - 26, currentY - 13))}
+            width={54}
+            height={26}
+            rx={8}
+            fill={color}
+          />
+          <text
+            x={width - padRight + 33}
+            y={Math.max(chartTop, Math.min(chartBottom - 26, currentY - 13)) + 17}
+            fill="white"
+            fontSize="12"
+            fontWeight="900"
+            textAnchor="middle"
+          >
+            {formatNumber(day.price)}
+          </text>
+          <line
+            x1={padX}
+            x2={width - padRight}
+            y1={volumeTop - 14}
+            y2={volumeTop - 14}
+            stroke="var(--border)"
+            strokeWidth={1}
+          />
+          <text x={padX} y={volumeTop - 22} fill="var(--muted)" fontSize="12" fontWeight="900">
+            거래량
+          </text>
+          {volumes.map((volume, index) => {
+            const barWidth = Math.max(2, stepX * 0.62);
+            const x = padX + index * stepX - barWidth / 2;
+            const barHeight = (volume / maxVolume) * (volumeBottom - volumeTop);
+            const up = chartPrices[index] >= chartPrices[Math.max(0, index - 1)];
+            return (
+              <rect
+                key={`${index}-${volume}`}
+                x={x}
+                y={volumeBottom - barHeight}
+                width={barWidth}
+                height={barHeight}
+                rx={1.5}
+                fill={up ? "var(--up)" : "var(--down)"}
+                opacity={0.22}
+              />
+            );
+          })}
+          {["09:00", "11:00", "13:00", "15:00"].map((label, index) => (
+            <text
+              key={label}
+              x={padX + ((width - padX - padRight) / 3) * index}
+              y={height - 8}
+              fill="var(--muted)"
+              fontSize="12"
+              fontWeight="900"
+              textAnchor={index === 0 ? "start" : index === 3 ? "end" : "middle"}
+            >
+              {label}
+            </text>
+          ))}
         </svg>
-        <div className="grid grid-cols-4 px-4 pb-2 text-xs font-bold text-muted">
-          <span>09:00</span>
-          <span>11:00</span>
-          <span>13:00</span>
-          <span className="text-right">15:00</span>
-        </div>
       </div>
     </div>
   );

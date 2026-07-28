@@ -306,19 +306,12 @@ export default function ScenariosPage() {
             <HeroIllustration />
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[12px] bg-[#f4f8ff] p-3">
+          <div className="mt-5 flex flex-wrap items-center gap-3 rounded-[12px] bg-[#f4f8ff] p-3">
             <div className="flex flex-wrap gap-x-5 gap-y-2 px-1 text-sm font-black">
               <span className="text-muted">IMF 외환위기 (1997)</span>
               <span>1997.11.19 ~ 1998.01.14</span>
               <span className="text-accent">0 / 5일</span>
             </div>
-            <Link
-              href="#scenario-path"
-              className="flex min-h-12 items-center justify-center gap-2 rounded-[10px] bg-accent px-5 text-base font-black text-white transition hover:bg-[#1b64da]"
-            >
-              IMF 흐름 보기
-              <ArrowIcon />
-            </Link>
           </div>
         </section>
 
