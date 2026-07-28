@@ -1,9 +1,16 @@
 export type TradeAction = "buy" | "sell" | "hold";
 
+export interface NewsArticle {
+  title: string;
+  summary: string;
+  source: string;
+}
+
 export interface ScenarioDay {
   date: string;
   price: number;
   headline: string;
+  articles: NewsArticle[];
 }
 
 export interface Scenario {

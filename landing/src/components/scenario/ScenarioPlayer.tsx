@@ -10,6 +10,7 @@ import type {
 import { applyTrade, portfolioValue, summarize } from "@/lib/scenario-engine";
 import { PriceSparkline } from "./PriceSparkline";
 import { TradePanel } from "./TradePanel";
+import { NewsFeed } from "./NewsFeed";
 import { ResultReport } from "./ResultReport";
 
 interface PlayerState {
@@ -66,6 +67,7 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
   });
 
   const currentDay = scenario.days[Math.min(state.dayIndex, scenario.days.length - 1)];
+  const previousDay = state.dayIndex > 0 ? scenario.days[state.dayIndex - 1] : null;
   const pricesSoFar = scenario.days.slice(0, state.dayIndex + 1).map((d) => d.price);
   const totalValue = portfolioValue(state.portfolio, currentDay.price);
 
@@ -79,42 +81,66 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
   const positionValue = state.portfolio.units * currentDay.price;
   const dayNumber = state.dayIndex + 1;
   const isLastDay = dayNumber === scenario.days.length;
+  const progress = (dayNumber / scenario.days.length) * 100;
+
+  const changePct = previousDay
+    ? ((currentDay.price - previousDay.price) / previousDay.price) * 100
+    : 0;
+  const changeUp = changePct >= 0;
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-12">
-      <div className="flex items-center justify-between text-xs text-muted">
+    <div className="mx-auto max-w-2xl px-6 pb-16 pt-8">
+      <div className="h-1 w-full overflow-hidden rounded-full bg-surface-2">
+        <div
+          className="h-full rounded-full bg-accent transition-all"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <div className="mt-4 flex items-center justify-between text-xs text-muted">
         <span>{scenario.title}</span>
         <span>
-          {dayNumber} / {scenario.days.length}일차
+          {dayNumber} / {scenario.days.length}일차 · {currentDay.date}
         </span>
       </div>
 
-      <p className="mt-2 text-sm text-muted">{currentDay.date}</p>
-      <p className="mt-3 text-lg font-semibold leading-7">{currentDay.headline}</p>
+      <p className="mt-4 text-lg font-semibold leading-7">{currentDay.headline}</p>
 
-      <div className="mt-6">
+      <div className="mt-4 flex items-end gap-3">
+        <span className="text-4xl font-bold tracking-tight">
+          {currentDay.price.toLocaleString()}원
+        </span>
+        {previousDay && (
+          <span
+            className={`mb-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
+              changeUp ? "bg-up/10 text-up" : "bg-down/10 text-down"
+            }`}
+          >
+            {changeUp ? "+" : ""}
+            {changePct.toFixed(1)}%
+          </span>
+        )}
+      </div>
+      <p className="mt-1 text-xs text-muted">{scenario.unitLabel} 1좌 가격</p>
+
+      <div className="mt-5">
         <PriceSparkline prices={pricesSoFar} />
       </div>
 
-      <div className="mt-4 flex items-baseline justify-between">
-        <span className="text-2xl font-bold">{currentDay.price.toLocaleString()}원</span>
-        <span className="text-xs text-muted">{scenario.unitLabel} 1좌 가격</span>
-      </div>
-
-      <div className="mt-6 grid grid-cols-3 gap-3 rounded-xl border border-border bg-surface p-4 text-center text-sm">
+      <div className="mt-6 grid grid-cols-3 gap-3 rounded-3xl border border-border bg-surface p-5 text-center text-sm">
         <div>
           <p className="text-xs text-muted">현금</p>
-          <p className="mt-1 font-semibold">
+          <p className="mt-1.5 font-semibold">
             {Math.round(state.portfolio.cash).toLocaleString()}원
           </p>
         </div>
         <div>
           <p className="text-xs text-muted">보유 포지션</p>
-          <p className="mt-1 font-semibold">{Math.round(positionValue).toLocaleString()}원</p>
+          <p className="mt-1.5 font-semibold">{Math.round(positionValue).toLocaleString()}원</p>
         </div>
         <div>
           <p className="text-xs text-muted">총 자산</p>
-          <p className="mt-1 font-semibold">{Math.round(totalValue).toLocaleString()}원</p>
+          <p className="mt-1.5 font-semibold">{Math.round(totalValue).toLocaleString()}원</p>
         </div>
       </div>
 
@@ -131,6 +157,8 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
           마지막 날이에요. 결정을 내리면 결과가 공개됩니다.
         </p>
       )}
+
+      <NewsFeed articles={currentDay.articles} />
     </div>
   );
 }
