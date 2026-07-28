@@ -183,13 +183,12 @@ function HeroIllustration() {
 
 function FlowCard({ card }: { card: (typeof flowCards)[number] }) {
   return (
-    <div className="flex items-center gap-4 rounded-[12px] bg-background p-4">
+    <div className="flex min-h-24 items-center gap-4 rounded-[12px] bg-background p-4">
       <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] ${card.tone}`}>
         <FlowIcon type={card.icon} />
       </div>
       <div>
         <p className="text-base font-black">{card.title}</p>
-        <p className="mt-1 text-sm font-bold text-muted">{card.description}</p>
       </div>
     </div>
   );
@@ -203,7 +202,7 @@ function ScenarioDayCard({
   index: number;
 }) {
   const unlocked = index === 0;
-  const issues = featuredScenario.knowledge?.summary ?? issueFallbacks[index] ?? [];
+  const issues = issueFallbacks[index] ?? [];
   const titles = ["IMF 시작 2일 전", "위기 심화, 시장 불안 확대", "긴급 브리핑, 시장 충격"];
   const descriptions = [
     "한국 금융시장 불안이 커지기 시작한 날입니다.",
