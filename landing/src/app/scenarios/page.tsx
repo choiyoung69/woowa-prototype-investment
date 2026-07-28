@@ -211,7 +211,7 @@ function ScenarioDayCard({
   ];
 
   const content = (
-    <div className="h-full rounded-[14px] border border-border bg-surface p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <div className="flex h-full min-h-[360px] flex-col rounded-[14px] border border-border bg-surface p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-3">
@@ -228,7 +228,7 @@ function ScenarioDayCard({
         </div>
       </div>
 
-      <div className="mt-5 border-t border-border pt-4">
+      <div className="mt-5 flex-1 border-t border-border pt-4">
         <p className="text-xs font-black text-muted">예상 주요 이슈</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {issues.slice(0, 3).map((issue) => (
@@ -239,7 +239,7 @@ function ScenarioDayCard({
         </div>
       </div>
 
-      <div className={`mt-5 flex h-12 items-center justify-center rounded-[10px] text-base font-black ${unlocked ? "bg-accent text-white" : "bg-surface-2 text-muted"}`}>
+      <div className={`mt-5 flex h-12 shrink-0 items-center justify-center rounded-[10px] text-base font-black ${unlocked ? "bg-accent text-white" : "bg-surface-2 text-muted"}`}>
         {unlocked ? "1일차 시작하기" : `${index}일차 완료 후 열려요`}
       </div>
     </div>
