@@ -113,32 +113,110 @@ function Shell({
   phase: Phase;
   children: React.ReactNode;
 }) {
+  const isMission = phase === "mission";
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-4 lg:px-6">
-        <main className="min-w-0 rounded-[16px] border border-border bg-surface p-5 shadow-sm sm:p-7">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-bold text-muted">
-                {scenario.title} · {dayIndex + 1}일차
-              </p>
-              <h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
-                {phase === "intro" && "시나리오 준비"}
-                {phase === "mission" && "오늘의 시장 판단"}
-              </h1>
-            </div>
-            <Link
-              href="/scenarios"
-              className="rounded-[10px] border border-border px-3 py-2 text-sm font-bold text-muted hover:text-foreground"
-            >
-              시나리오 선택
-            </Link>
-          </div>
+      {isMission && <TopNav />}
 
-          <div className="mt-6">{children}</div>
+      <div className={`mx-auto px-4 py-4 lg:px-6 ${isMission ? "max-w-[1920px]" : "max-w-7xl"}`}>
+        <main
+          className={
+            isMission
+              ? "min-w-0"
+              : "min-w-0 rounded-[16px] border border-border bg-surface p-5 shadow-sm sm:p-7"
+          }
+        >
+          {!isMission && (
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-bold text-muted">
+                  {scenario.title} · {dayIndex + 1}일차
+                </p>
+                <h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
+                  시나리오 준비
+                </h1>
+              </div>
+              <Link
+                href="/scenarios"
+                className="rounded-[10px] border border-border px-3 py-2 text-sm font-bold text-muted hover:text-foreground"
+              >
+                시나리오 선택
+              </Link>
+            </div>
+          )}
+
+          <div className={isMission ? "" : "mt-6"}>{children}</div>
         </main>
       </div>
     </div>
+  );
+}
+
+function TopNav() {
+  const navItems = ["홈", "오늘의 뉴스", "학습", "과거로 돌아가기", "포트폴리오", "내 정보"];
+
+  return (
+    <header className="border-b border-border bg-surface">
+      <div className="mx-auto flex h-16 max-w-[1920px] items-center justify-between px-5 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 text-lg font-black">
+          <span className="relative h-8 w-8 rounded-[9px] bg-[#191f28]">
+            <span className="absolute left-2 top-2 h-4 w-4 rotate-45 rounded-[3px] bg-[#3182f6]" />
+          </span>
+          투자체험랩
+        </Link>
+
+        <nav className="hidden h-full items-center gap-8 text-sm font-black text-muted lg:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item}
+              href={item === "과거로 돌아가기" ? "/scenarios" : "#"}
+              className={`flex h-full items-center border-b-4 ${
+                item === "과거로 돌아가기"
+                  ? "border-accent text-accent"
+                  : "border-transparent hover:text-foreground"
+              }`}
+            >
+              {item}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-4 text-sm font-black">
+          <span className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-[9px] bg-accent text-white">
+              ◆
+            </span>
+            597P
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-[9px] bg-[#f0448f] text-white">
+              ↯
+            </span>
+            25
+          </span>
+          <span className="hidden text-muted sm:inline">Lv.3 투자초보</span>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="5" y="10" width="14" height="10" rx="2" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+    </svg>
   );
 }
 
@@ -241,15 +319,17 @@ function IntroStep({
 function ScenarioTimeline({
   scenario,
   dayIndex,
+  cash,
 }: {
   scenario: Scenario;
   dayIndex: number;
+  cash: number;
 }) {
   return (
-    <aside className="rounded-[12px] border border-border bg-surface p-5">
+    <aside className="flex min-h-[620px] flex-col rounded-[12px] border border-border bg-surface p-5">
       <p className="text-sm font-black">1단계 ({scenario.days.length}일)</p>
       <p className="mt-1 text-sm font-bold text-muted">IMF 외환위기 (1997)</p>
-      <div className="mt-6 space-y-5">
+      <div className="mt-6 flex-1 space-y-5">
         {scenario.days.map((day, index) => {
           const active = index === dayIndex;
           const locked = index > dayIndex;
@@ -270,9 +350,13 @@ function ScenarioTimeline({
                 </p>
                 <p className="mt-0.5 text-xs font-bold text-muted">
                   {formatShortDate(day.date)} ({getDayName(day.date)})
-                  {locked ? " · 잠김" : ""}
                 </p>
               </div>
+              {locked && (
+                <span className="ml-auto mt-1 text-muted">
+                  <LockIcon />
+                </span>
+              )}
             </div>
           );
         })}
@@ -284,7 +368,14 @@ function ScenarioTimeline({
             <p className="text-sm font-black text-muted">결과 확인</p>
             <p className="mt-0.5 text-xs font-bold text-muted">선택 복기</p>
           </div>
+          <span className="ml-auto mt-1 text-muted">
+            <LockIcon />
+          </span>
         </div>
+      </div>
+      <div className="mt-8 rounded-[12px] bg-background p-4">
+        <p className="text-xs font-black text-muted">보유 현금</p>
+        <p className="mt-2 text-lg font-black">{formatKrw(cash)}</p>
       </div>
     </aside>
   );
@@ -462,8 +553,8 @@ function MissionStep({
   onSubmit: (input: TradeInput) => void;
 }) {
   return (
-    <div className="grid gap-4 xl:grid-cols-[220px_1fr]">
-      <ScenarioTimeline scenario={scenario} dayIndex={dayIndex} />
+    <div className="grid gap-4 lg:grid-cols-[220px_1fr]">
+      <ScenarioTimeline scenario={scenario} dayIndex={dayIndex} cash={cash} />
 
       <div className="min-w-0 space-y-4">
         <section className="rounded-[16px] border border-border bg-surface p-5 shadow-sm sm:p-6">
@@ -482,12 +573,12 @@ function MissionStep({
             </span>
           </div>
 
-          <div className="mt-6 grid gap-5 xl:grid-cols-[1fr_360px]">
+          <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
             <MarketChart day={day} />
             <MarketStats day={day} cash={cash} positionValue={positionValue} />
           </div>
 
-          <div className="mt-5 grid gap-3 rounded-[12px] border border-border bg-background p-4 2xl:grid-cols-[260px_1fr_220px]">
+          <div className="mt-5 grid gap-3 rounded-[12px] border border-border bg-background p-4 2xl:grid-cols-[300px_minmax(0,1fr)_220px]">
             <div className="flex items-center text-base font-black">
               오늘의 시장, 어떻게 대응하시겠어요?
             </div>
