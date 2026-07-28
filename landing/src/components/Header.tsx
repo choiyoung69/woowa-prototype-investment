@@ -18,7 +18,7 @@ export function Header() {
             href="/scenarios"
             className="rounded-[8px] bg-accent px-4 py-2 text-sm font-bold text-accent-foreground transition hover:bg-[#1b64da]"
           >
-            지금 체험하기
+            IMF 체험하기
           </Link>
         </div>
       </div>

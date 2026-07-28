@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const title = "그날의 나에게 — 과거로 돌아가 다시 투자해보는 서비스";
+const title = "그날의 나에게 — IMF 때 샀으면? 직접 판단해보는 투자 학습";
 const description =
-  "IMF 외환위기 속 직장인, 취준생, 자영업자 입장에서 당시 정보만 보고 투자 결정을 내려보세요. 선택 이유를 기록하고 실제 결과로 복기하는 투자 학습 서비스.";
+  "1997년 IMF 외환위기 속으로 돌아가 당시 공개된 뉴스와 지표만 보고 매수·매도·관망을 선택하세요. 판단 이유를 기록하고 실제 결과로 복기하는 체험형 투자 학습 서비스.";
 
 export const metadata: Metadata = {
   title,

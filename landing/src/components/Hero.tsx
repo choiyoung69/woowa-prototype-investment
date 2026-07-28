@@ -3,73 +3,127 @@ import Link from "next/link";
 export function Hero() {
   return (
     <section className="overflow-hidden border-b border-border bg-surface">
-      <div className="mx-auto flex max-w-6xl flex-col items-center px-5 pb-4 pt-10 text-center sm:px-6 sm:pt-8">
-        <span className="rounded-[8px] bg-[#e8f3ff] px-3 py-1.5 text-sm font-bold text-accent">
-          매일 학습하고, 직접 판단하고, 다시 복기하는 투자 학습
+      <div className="mx-auto flex max-w-6xl flex-col items-center px-5 pb-8 pt-10 text-center sm:px-6 sm:pt-12">
+        <span className="rounded-full bg-[#e8f3ff] px-4 py-2 text-sm font-black text-accent">
+          뉴스만 읽고 끝났던 투자 공부를 판단 연습으로
         </span>
 
-        <h1 className="mt-5 max-w-4xl text-3xl font-bold leading-tight tracking-tight text-balance sm:mt-6 sm:text-5xl">
-          경제 뉴스를 읽고도
+        <h1 className="mt-5 max-w-5xl text-4xl font-black leading-tight tracking-tight text-balance sm:mt-6 sm:text-6xl">
+          “IMF 때 샀으면?”
           <br />
-          어떻게 판단할지 모르겠다면
+          이제 직접 판단해보세요
         </h1>
 
-        <p className="mt-4 max-w-2xl text-base leading-7 text-muted sm:mt-5 sm:text-lg sm:leading-8">
-          먼저 IMF 외환위기 속 세 가지 입장을 체험해요. 같은 사건이라도
-          직장인, 취준생, 자영업자가 봐야 할 위험은 다릅니다. 결과보다 중요한 건
-          왜 그렇게 판단했는지 기록하고 복기하는 과정입니다.
+        <p className="mt-4 max-w-3xl break-keep text-base font-bold leading-7 text-muted sm:mt-5 sm:text-xl sm:leading-9">
+          1997년으로 돌아가 당시 공개된 뉴스와 지표만 보고 매수·매도·관망을 선택합니다.
+          중요한 건 수익률 자랑이 아니라, 내가 무엇을 보고 판단했고 무엇을 놓쳤는지 복기하는 것입니다.
         </p>
 
-        <div className="mt-6 flex flex-col items-center gap-3 sm:mt-9">
+        <div className="mt-6 flex flex-col items-center gap-3 sm:mt-8 sm:flex-row">
           <Link
             href="/scenarios"
-            className="rounded-[12px] bg-accent px-8 py-4 text-base font-bold text-accent-foreground shadow-lg shadow-blue-500/20 transition hover:bg-[#1b64da]"
+            className="rounded-[12px] bg-accent px-8 py-4 text-base font-black text-accent-foreground shadow-lg shadow-blue-500/20 transition hover:bg-[#1b64da]"
           >
-            과거 위기 시나리오 체험하기
+            IMF 직전으로 돌아가기
           </Link>
-          <span className="text-xs text-muted">회원가입 없이 바로 시작해요</span>
+          <Link
+            href="#validation"
+            className="rounded-[12px] bg-[#e8f3ff] px-8 py-4 text-base font-black text-accent transition hover:bg-[#d6eaff]"
+          >
+            왜 만들었는지 보기
+          </Link>
+        </div>
+        <span className="mt-3 text-xs font-bold text-muted">회원가입 없이 MVP 바로 체험</span>
+
+        <div className="mt-8 grid w-full max-w-5xl gap-4 text-left md:grid-cols-[1.2fr_0.8fr]">
+          <div className="overflow-hidden rounded-[14px] border border-border bg-background shadow-[0_24px_80px_rgba(49,130,246,0.14)]">
+            <div className="border-b border-border bg-surface px-5 py-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-black">DAY 1 · 1997년 11월 19일</p>
+                  <p className="mt-1 text-xs font-bold text-muted">IMF 구제금융 요청 2일 전</p>
+                </div>
+                <span className="rounded-full bg-down/10 px-2.5 py-1 text-xs font-black text-down">
+                  KOSPI -4.34%
+                </span>
+              </div>
+            </div>
+            <div className="p-4 sm:p-6">
+              <p className="text-sm font-black text-muted">당시 공개된 정보</p>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                {["한보그룹 부도", "환율 급등", "외국인 순매도"].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-[10px] bg-surface px-3 py-3 text-center text-sm font-black"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-5 rounded-[12px] bg-surface p-4">
+                <div className="flex flex-wrap items-end gap-3">
+                  <div>
+                    <p className="text-sm font-black text-muted">코스피 KOSPI</p>
+                    <p className="mt-1 text-4xl font-black tracking-tight">689.12</p>
+                  </div>
+                  <p className="pb-1 text-lg font-black text-down">-31.29 (-4.34%)</p>
+                </div>
+                <div className="mt-4 h-32 rounded-[10px] bg-background p-3">
+                  <svg viewBox="0 0 640 180" className="h-full w-full" preserveAspectRatio="none">
+                    <path
+                      d="M0 44 L30 22 L60 55 L90 82 L120 50 L150 93 L180 118 L210 72 L240 102 L270 150 L300 118 L330 86 L360 126 L390 154 L420 106 L450 138 L480 160 L510 126 L540 146 L570 170 L600 138 L640 112"
+                      fill="none"
+                      stroke="var(--down)"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M0 44 L30 22 L60 55 L90 82 L120 50 L150 93 L180 118 L210 72 L240 102 L270 150 L300 118 L330 86 L360 126 L390 154 L420 106 L450 138 L480 160 L510 126 L540 146 L570 170 L600 138 L640 112 L640 180 L0 180 Z"
+                      fill="rgba(240,68,82,0.10)"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-[14px] border border-border bg-[#191f28] p-5 text-white shadow-[0_24px_80px_rgba(25,31,40,0.18)]">
+            <p className="text-sm font-black text-white/60">오늘 해야 할 일</p>
+            <div className="mt-5 space-y-3">
+              {[
+                ["1", "뉴스 읽기", "결과를 모른 채 그날 정보만 확인"],
+                ["2", "판단하기", "매수·매도·관망 중 하나 선택"],
+                ["3", "이유 남기기", "왜 그렇게 봤는지 짧게 기록"],
+                ["4", "결과로 복기", "내가 놓친 신호 확인"],
+              ].map(([step, title, body]) => (
+                <div key={step} className="flex gap-3 rounded-[12px] bg-white/10 p-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-[#191f28]">
+                    {step}
+                  </span>
+                  <div>
+                    <p className="font-black">{title}</p>
+                    <p className="mt-1 text-sm font-bold text-white/60">{body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="mt-6 w-full max-w-4xl overflow-hidden rounded-[8px] border border-border bg-background text-left shadow-[0_24px_80px_rgba(49,130,246,0.14)]">
-          <div className="border-b border-border bg-surface px-5 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-bold">1997.12.03 IMF 직전 뉴스</p>
-                <p className="mt-1 text-xs text-muted">당시 공개된 정보만 보고 판단</p>
-              </div>
-              <span className="rounded-full bg-down/10 px-2.5 py-1 text-xs font-bold text-down">
-                -7.8%
-              </span>
+        <div className="mt-5 grid w-full max-w-5xl gap-3 text-left sm:grid-cols-3">
+          {[
+            ["인터뷰 10명", "정보는 보는데 판단으로 연결하지 못한다는 문제 확인"],
+            ["콘시어지 MVP", "카카오톡으로 하루치 시나리오를 보내 직접 판단 유도"],
+            ["현재 검증 중", "프로토타입으로 며칠 이상 지속 사용되는지 실험"],
+          ].map(([title, body]) => (
+            <div key={title} className="rounded-[12px] bg-background p-4">
+              <p className="text-base font-black">{title}</p>
+              <p className="mt-2 break-keep text-sm font-bold leading-6 text-muted">{body}</p>
             </div>
-          </div>
-          <div className="grid gap-0 md:grid-cols-[1.2fr_0.8fr]">
-            <div className="p-4 sm:p-6">
-              <p className="text-sm text-muted">KOSPI 가상 1좌 가격</p>
-              <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">381,200원</p>
-              <div className="mt-4 h-20 rounded-[8px] bg-surface p-3 sm:h-24 sm:p-4">
-                <svg viewBox="0 0 520 140" className="h-full w-full" preserveAspectRatio="none">
-                  <path d="M0 38 C70 28 110 54 170 50 C230 46 260 75 320 82 C385 90 420 108 520 116" fill="none" stroke="var(--down)" strokeWidth="4" strokeLinecap="round" />
-                  <path d="M0 38 C70 28 110 54 170 50 C230 46 260 75 320 82 C385 90 420 108 520 116 L520 140 L0 140 Z" fill="rgba(240,68,82,0.08)" />
-                </svg>
-              </div>
-            </div>
-            <div className="hidden border-t border-border bg-surface p-5 md:block md:border-l md:border-t-0 sm:p-6">
-              <p className="text-sm font-bold">오늘의 판단</p>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                <span className="rounded-[8px] bg-up/10 py-3 text-center text-sm font-bold text-up">매수</span>
-                <span className="rounded-[8px] bg-down/10 py-3 text-center text-sm font-bold text-down">매도</span>
-                <span className="rounded-[8px] bg-surface-2 py-3 text-center text-sm font-bold">관망</span>
-              </div>
-              <div className="mt-5 rounded-[8px] bg-background p-4">
-                <p className="text-xs font-bold text-accent">판단 복기 포인트</p>
-                <p className="mt-1 text-sm leading-6 text-muted">
-                  무엇을 보고 샀는지, 무엇을 놓쳤는지 남겨두면 다음 뉴스와
-                  경제 개념을 판단으로 연결할 수 있어요.
-                </p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
+
       </div>
     </section>
   );
