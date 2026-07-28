@@ -50,18 +50,22 @@ export function TradePanel({
             key={type}
             type="button"
             onClick={() => setOpenAction(type)}
-            className={`flex w-full items-center gap-4 rounded-[12px] border p-4 text-left transition ${actionButtonClass[type]}`}
+            className={`flex w-full items-center gap-4 rounded-[12px] border p-4 text-left transition ${actionButtonClass[type]} ${
+              variant === "bar" ? "min-h-20" : ""
+            }`}
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-current/10 text-xl">
               {type === "buy" ? "↗" : type === "sell" ? "↘" : "Ⅱ"}
             </span>
-            <span>
+            <span className="min-w-0">
               <span className="block text-base font-black">
-                {actionLabels[type]}하기
+                {variant === "bar" ? actionLabels[type] : `${actionLabels[type]}하기`}
               </span>
-              <span className="mt-0.5 block text-sm font-bold opacity-70">
-                {actionDescriptions[type]}
-              </span>
+              {variant !== "bar" && (
+                <span className="mt-0.5 block text-sm font-bold opacity-70">
+                  {actionDescriptions[type]}
+                </span>
+              )}
             </span>
           </button>
         ))}

@@ -386,7 +386,7 @@ function MarketChart({ day }: { day: ScenarioDay }) {
   const min = Math.min(...chartPrices);
   const max = Math.max(...chartPrices);
   const width = 720;
-  const height = 260;
+  const height = 360;
   const padX = 18;
   const padY = 24;
   const range = max - min || 1;
@@ -434,11 +434,11 @@ function MarketChart({ day }: { day: ScenarioDay }) {
         ))}
       </div>
 
-      <div className="mt-4 rounded-[12px] bg-surface">
+      <div className="mt-5 rounded-[12px] bg-surface">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           preserveAspectRatio="none"
-          className="h-[260px] w-full"
+          className="h-[360px] w-full"
           role="img"
           aria-label="오늘 시장 가격 흐름"
         >
@@ -488,11 +488,9 @@ const scenarioMarketName = "코스피 KOSPI";
 function MarketStats({
   day,
   cash,
-  positionValue,
 }: {
   day: ScenarioDay;
   cash: number;
-  positionValue: number;
 }) {
   const { open } = changeFromOpen(day);
   const low = Math.min(...makeSessionPrices(day));
@@ -501,15 +499,17 @@ function MarketStats({
   const foreignFlow = Math.round((open - day.price) * 2.7);
 
   return (
-    <div className="grid gap-px overflow-hidden rounded-[12px] border border-border bg-border sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-      <MetricTile label="시가" value={open.toLocaleString()} />
-      <MetricTile label="고가" value={high.toLocaleString()} />
-      <MetricTile label="저가" value={low.toLocaleString()} />
-      <MetricTile label="원/달러 환율" value={`${fxRate.toLocaleString()}원`} />
-      <MetricTile label="외국인 순매도" value={`-${foreignFlow.toLocaleString()}억원`} tone="down" />
-      <MetricTile label="보유 현금" value={formatKrw(cash)} />
-      <MetricTile label="포지션" value={formatKrw(positionValue)} />
-      <MetricTile label="판단 기준" value="뉴스·지표" />
+    <div className="rounded-[12px] border border-border bg-surface p-4 shadow-sm">
+      <p className="text-sm font-black text-muted">시장 요약</p>
+      <div className="mt-3 grid gap-2">
+        <CompactMetric label="시가" value={open.toLocaleString()} />
+        <CompactMetric label="고가" value={high.toLocaleString()} />
+        <CompactMetric label="저가" value={low.toLocaleString()} />
+        <CompactMetric label="원/달러 환율" value={`${fxRate.toLocaleString()}원`} />
+        <CompactMetric label="외국인 순매도" value={`-${foreignFlow.toLocaleString()}억원`} tone="down" />
+        <CompactMetric label="보유 현금" value={formatKrw(cash)} />
+        <CompactMetric label="판단 기준" value="뉴스·지표" />
+      </div>
     </div>
   );
 }
@@ -552,6 +552,9 @@ function MissionStep({
   positionValue: number;
   onSubmit: (input: TradeInput) => void;
 }) {
+  const newsTimes = ["09:30", "10:15", "11:20", "12:05", "14:10"];
+  const newsCategories = ["경제", "금융", "기업", "국제", "시장"];
+
   return (
     <div className="grid gap-4 lg:grid-cols-[220px_1fr]">
       <ScenarioTimeline scenario={scenario} dayIndex={dayIndex} cash={cash} />
@@ -573,25 +576,18 @@ function MissionStep({
             </span>
           </div>
 
-          <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_260px]">
             <MarketChart day={day} />
-            <MarketStats day={day} cash={cash} positionValue={positionValue} />
+            <MarketStats day={day} cash={cash} />
           </div>
 
-          <div className="mt-5 grid gap-3 rounded-[12px] border border-border bg-background p-4 2xl:grid-cols-[300px_minmax(0,1fr)_220px]">
-            <div className="flex items-center text-base font-black">
-              오늘의 시장, 어떻게 대응하시겠어요?
-            </div>
+          <div className="mt-5 rounded-[12px] border border-border bg-background p-4">
             <TradePanel
               cash={cash}
               positionValue={positionValue}
               onSubmit={onSubmit}
               variant="bar"
             />
-            <div className="rounded-[12px] bg-surface p-4">
-              <p className="text-xs font-black text-muted">보유 현금</p>
-              <p className="mt-2 text-lg font-black">{formatKrw(cash)}</p>
-            </div>
           </div>
         </section>
 
@@ -620,7 +616,7 @@ function MissionStep({
                 <div>
                   <p className="text-xs font-black text-accent">{article.source}</p>
                   <p className="mt-1 text-xs font-bold text-muted">
-                    {index === 0 ? "09:30" : "10:15"}
+                    {newsTimes[index] ?? "15:00"}
                   </p>
                 </div>
                 <div className="min-w-0">
@@ -630,7 +626,7 @@ function MissionStep({
                   </p>
                 </div>
                 <span className="h-fit rounded-full bg-background px-2 py-1 text-center text-xs font-black text-muted">
-                  {index === 0 ? "경제" : "금융"}
+                  {newsCategories[index] ?? "이슈"}
                 </span>
               </article>
             ))}
@@ -643,7 +639,7 @@ function MissionStep({
   );
 }
 
-function MetricTile({
+function CompactMetric({
   label,
   value,
   tone,
@@ -653,10 +649,10 @@ function MetricTile({
   tone?: "up" | "down";
 }) {
   return (
-    <div className="bg-surface p-4">
-      <p className="text-xs font-black text-muted">{label}</p>
+    <div className="rounded-[10px] bg-background px-3 py-2.5">
+      <p className="text-[11px] font-black text-muted">{label}</p>
       <p
-        className={`mt-2 truncate text-lg font-black ${
+        className={`mt-1 truncate text-base font-black ${
           tone === "up" ? "text-up" : tone === "down" ? "text-down" : ""
         }`}
       >
