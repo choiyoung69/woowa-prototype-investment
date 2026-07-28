@@ -15,9 +15,9 @@ export function Hero() {
         </h1>
 
         <p className="mt-4 max-w-2xl text-base leading-7 text-muted sm:mt-5 sm:text-lg sm:leading-8">
-          오늘의 경제 흐름을 배우고, IMF와 코로나 폭락 같은 실제 사건 속에서
-          매수, 매도, 관망을 선택해요. 결과보다 중요한 건 왜 그렇게 판단했는지
-          기록하고 복기하는 과정입니다.
+          먼저 IMF 외환위기 속 세 가지 입장을 체험해요. 같은 사건이라도
+          직장인, 취준생, 자영업자가 봐야 할 위험은 다릅니다. 결과보다 중요한 건
+          왜 그렇게 판단했는지 기록하고 복기하는 과정입니다.
         </p>
 
         <div className="mt-6 flex flex-col items-center gap-3 sm:mt-9">

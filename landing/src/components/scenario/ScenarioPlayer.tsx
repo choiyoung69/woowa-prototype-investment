@@ -245,11 +245,11 @@ function MissionStep({
       <section className="min-w-0 rounded-[12px] border border-border bg-background p-6">
         <p className="text-sm font-bold text-muted">학습 목표</p>
         <ul className="mt-5 space-y-4">
-          {[
+          {(scenario.learningGoals ?? [
             "당시 뉴스 3개 이상 확인하기",
             "시장 지표가 왜 움직였는지 추론하기",
             "선택 이유를 한 문장 이상 기록하기",
-          ].map((goal) => (
+          ]).map((goal) => (
             <li key={goal} className="flex gap-3 text-sm font-bold text-muted">
               <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full border border-border text-[10px]">
                 ✓

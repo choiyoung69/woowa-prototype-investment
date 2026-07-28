@@ -27,7 +27,7 @@ export default async function Image({
     : `${days}일 동안 ${tradeCount}번 매매했어요`;
 
   const charset =
-    "그날의나에게코로나폭락밈스톡급등금리인상기수익률결과가장많이느낀감정동안번매매했어요 0123456789%+-." +
+    "그날의나에게IMF외환위기직장인취준생자영업자수익률결과가장많이느낀감정동안번매매했어요 0123456789%+-." +
     scenarioTitle +
     (topTag?.label ?? "") +
     returnText +

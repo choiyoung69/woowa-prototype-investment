@@ -39,6 +39,8 @@ export interface Scenario {
   checkpointAfterDay?: number;
   /** Sets up who the player is playing as, shown once at the start. */
   persona?: string;
+  /** Role-specific learning goals shown before each scenario run. */
+  learningGoals?: string[];
   /** Real economic concepts tied to this scenario, shown in the result report. */
   keyConcepts?: KeyConcept[];
 }

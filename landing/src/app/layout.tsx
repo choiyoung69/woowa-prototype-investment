@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 const title = "그날의 나에게 — 과거로 돌아가 다시 투자해보는 서비스";
 const description =
-  "IMF 외환위기, 코로나 폭락. 이미 결과를 아는 그날로 돌아가 모르는 척 다시 판단해보세요. 그 순간의 이유와 감정을 기록하고 복기하는 투자 심리 학습 서비스.";
+  "IMF 외환위기 속 직장인, 취준생, 자영업자 입장에서 당시 정보만 보고 투자 결정을 내려보세요. 선택 이유를 기록하고 실제 결과로 복기하는 투자 학습 서비스.";
 
 export const metadata: Metadata = {
   title,

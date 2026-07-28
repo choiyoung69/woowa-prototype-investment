@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { scenarios, upcomingScenarios } from "@/data/scenarios";
+import { scenarios } from "@/data/scenarios";
 
 export const metadata: Metadata = {
   title: "시나리오 선택 | 그날의 나에게",
@@ -228,20 +228,6 @@ export default function ScenariosPage() {
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             {scenarios.map((scenario, index) => (
               <ScenarioCard key={scenario.id} scenario={scenario} index={index} />
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[16px] bg-surface p-6 shadow-sm">
-          <p className="text-sm font-bold text-muted">다음에 열릴 경제 사건</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {upcomingScenarios.map((scenario) => (
-              <span
-                key={scenario.id}
-                className="rounded-full bg-surface-2 px-3 py-2 text-sm font-bold text-muted"
-              >
-                {scenario.title}
-              </span>
             ))}
           </div>
         </section>
