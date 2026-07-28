@@ -3,33 +3,35 @@ import { useId } from "react";
 export function PriceSparkline({ prices }: { prices: number[] }) {
   const gradientId = useId();
 
-  if (prices.length < 2) {
+  if (prices.length === 0) {
     return <div className="h-40 w-full rounded-2xl border border-border bg-surface" />;
   }
 
   const width = 600;
   const height = 160;
   const padY = 16;
+  const hasMultiplePoints = prices.length > 1;
 
   const min = Math.min(...prices);
   const max = Math.max(...prices);
   const range = max - min || 1;
-  const stepX = width / (prices.length - 1);
+  const stepX = hasMultiplePoints ? width / (prices.length - 1) : width;
 
   const toY = (price: number) =>
-    padY + (height - padY * 2) - ((price - min) / range) * (height - padY * 2);
+    hasMultiplePoints
+      ? padY + (height - padY * 2) - ((price - min) / range) * (height - padY * 2)
+      : height / 2;
 
-  const linePoints = prices.map((price, index) => `${index * stepX},${toY(price)}`);
-  const areaPoints = [
-    `0,${height}`,
-    ...linePoints,
-    `${(prices.length - 1) * stepX},${height}`,
-  ];
+  const linePoints = hasMultiplePoints
+    ? prices.map((price, index) => `${index * stepX},${toY(price)}`)
+    : [`0,${height / 2}`, `${width},${height / 2}`];
+
+  const areaPoints = [`0,${height}`, ...linePoints, `${width},${height}`];
 
   const trendUp = prices[prices.length - 1] >= prices[0];
   const color = trendUp ? "var(--up)" : "var(--down)";
   const startY = toY(prices[0]);
-  const lastX = (prices.length - 1) * stepX;
+  const lastX = width;
   const lastY = toY(prices[prices.length - 1]);
 
   return (
