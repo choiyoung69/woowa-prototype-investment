@@ -2,17 +2,17 @@ const problems = [
   {
     label: "모의투자 앱",
     points: [
-      "실시간 시세 + 가상 매매에만 집중",
-      "가상 자금이라 손실이 아프지 않음",
-      "“왜 그런 판단을 했는지” 기록하는 장치가 없음",
+      "현재 시장 매매와 수익률 경쟁에 집중",
+      "정보를 어떻게 해석했는지 남기기 어려움",
+      "손익은 보이지만 판단 과정은 흐려짐",
     ],
   },
   {
-    label: "경제 뉴스레터",
+    label: "경제 뉴스·퀴즈 서비스",
     points: [
-      "읽는 콘텐츠로만 머무름",
-      "직접 체험하며 체득하는 행동 레이어 없음",
-      "필요한 지식만 원해도 정보가 산만함",
+      "경제를 쉽게 접하게 해주지만 읽는 경험에 머무름",
+      "정보를 실제 투자 판단으로 연결하는 연습이 부족함",
+      "스스로 선택하고 결과를 복기하는 흐름이 약함",
     ],
   },
 ];
@@ -22,10 +22,10 @@ export function ProblemSection() {
     <section className="border-b border-border bg-background">
       <div className="mx-auto max-w-5xl px-5 py-12 sm:px-6 sm:py-10">
         <h2 className="text-center text-3xl font-bold sm:text-4xl">
-          매매를 반복해도 실력이 느는 느낌이 없었다면
+          문제는 지식 부족보다 판단으로 연결되지 않는다는 것
         </h2>
         <p className="mt-4 text-center text-base text-muted">
-          기존 모의투자 앱과 경제 뉴스레터, 둘 다 아쉬운 지점이 있었습니다.
+          인터뷰에서는 “뉴스를 봐도 결국 투자로 연결을 못 한다”는 응답이 반복됐습니다.
         </p>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
@@ -50,9 +50,9 @@ export function ProblemSection() {
         </div>
 
         <p className="mx-auto mt-10 max-w-xl text-center text-base leading-7 text-muted">
-          결과를 아는 과거를, 모르는 척 다시 겪어보며{" "}
-          <span className="text-foreground">기록하고 복기한다</span> — 그
-          사이의 빈틈을 채우려 합니다.
+          그래서 단순 요약보다{" "}
+          <span className="text-foreground">정보를 보고 선택하고, 선택한 이유를 복기하는 경험</span>을
+          먼저 검증합니다.
         </p>
       </div>
     </section>

@@ -5,11 +5,11 @@ export function FinalCta() {
     <section id="subscribe" className="scroll-mt-20 border-b border-border bg-surface">
       <div className="mx-auto max-w-2xl px-5 py-24 text-center sm:px-6">
         <h2 className="text-3xl font-bold sm:text-4xl">
-          &ldquo;패닉셀 안 하려고 했는데, 결국 했다&rdquo;
+          먼저 검증할 핵심은 과거 위기 회귀 학습입니다
         </h2>
         <p className="mt-4 text-base leading-7 text-muted">
-          지금 IMF 외환위기와 코로나 폭락을 체험할 수 있어요. 밈스톡 급등, 금리인상기도
-          준비 중이에요. 다음 시나리오 소식을 가장 먼저 받고 싶다면 이메일을 남겨주세요.
+          지금은 IMF 외환위기와 코로나 폭락 시나리오로 “당시 정보만 보고 판단하기”를
+          체험할 수 있어요. 이후 반응을 보며 매일 투자 학습과 실시간 모의투자를 확장합니다.
         </p>
 
         <div className="mt-8">

@@ -5,18 +5,19 @@ export function Hero() {
     <section className="overflow-hidden border-b border-border bg-surface">
       <div className="mx-auto flex max-w-6xl flex-col items-center px-5 pb-4 pt-10 text-center sm:px-6 sm:pt-8">
         <span className="rounded-[8px] bg-[#e8f3ff] px-3 py-1.5 text-sm font-bold text-accent">
-          과거 사건으로 배우는 투자 판단
+          매일 학습하고, 직접 판단하고, 다시 복기하는 투자 학습
         </span>
 
         <h1 className="mt-5 max-w-4xl text-3xl font-bold leading-tight tracking-tight text-balance sm:mt-6 sm:text-5xl">
-          IMF 그날로 돌아가
+          경제 뉴스를 읽고도
           <br />
-          다시 투자해보세요
+          어떻게 판단할지 모르겠다면
         </h1>
 
         <p className="mt-4 max-w-2xl text-base leading-7 text-muted sm:mt-5 sm:text-lg sm:leading-8">
-          이미 결과를 아는 사건을 모르는 척 다시 겪으며 매수, 매도, 관망을
-          선택해요. 판단의 이유와 감정을 남기고 내 투자 습관을 복기합니다.
+          오늘의 경제 흐름을 배우고, IMF와 코로나 폭락 같은 실제 사건 속에서
+          매수, 매도, 관망을 선택해요. 결과보다 중요한 건 왜 그렇게 판단했는지
+          기록하고 복기하는 과정입니다.
         </p>
 
         <div className="mt-6 flex flex-col items-center gap-3 sm:mt-9">
@@ -24,7 +25,7 @@ export function Hero() {
             href="/scenarios"
             className="rounded-[12px] bg-accent px-8 py-4 text-base font-bold text-accent-foreground shadow-lg shadow-blue-500/20 transition hover:bg-[#1b64da]"
           >
-            회원가입 없이 체험하기
+            과거 위기 시나리오 체험하기
           </Link>
           <span className="text-xs text-muted">회원가입 없이 바로 시작해요</span>
         </div>
@@ -33,8 +34,8 @@ export function Hero() {
           <div className="border-b border-border bg-surface px-5 py-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-bold">1997.12.03 IMF 구제금융 신청</p>
-                <p className="mt-1 text-xs text-muted">4일차 · 다음 뉴스 공개 전</p>
+                <p className="text-sm font-bold">1997.12.03 IMF 직전 뉴스</p>
+                <p className="mt-1 text-xs text-muted">당시 공개된 정보만 보고 판단</p>
               </div>
               <span className="rounded-full bg-down/10 px-2.5 py-1 text-xs font-bold text-down">
                 -7.8%
@@ -60,10 +61,10 @@ export function Hero() {
                 <span className="rounded-[8px] bg-surface-2 py-3 text-center text-sm font-bold">관망</span>
               </div>
               <div className="mt-5 rounded-[8px] bg-background p-4">
-                <p className="text-xs font-bold text-accent">방금 나온 투자 감정</p>
+                <p className="text-xs font-bold text-accent">판단 복기 포인트</p>
                 <p className="mt-1 text-sm leading-6 text-muted">
-                  더 떨어질까 봐 팔았다면 패닉셀 가능성이 있어요. 결과보다 판단
-                  과정을 먼저 기록해보세요.
+                  무엇을 보고 샀는지, 무엇을 놓쳤는지 남겨두면 다음 뉴스와
+                  경제 개념을 판단으로 연결할 수 있어요.
                 </p>
               </div>
             </div>

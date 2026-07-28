@@ -1,21 +1,21 @@
 const concepts = [
   {
     tag: "축 1",
-    title: "과거로 돌아가는 체험",
+    title: "실시간 모의투자",
     description:
-      "IMF 외환위기, 코로나 폭락 같은 시점으로 이동해 하루 단위로 매매를 체험해요. 살 때마다, 팔 때마다 이유와 감정(패닉셀, 물타기, FOMO 등)을 기록합니다.",
+      "실제 시장 시세를 기반으로 부담 없이 투자 경험을 쌓아요. 시장이 열리는 매일 다시 방문할 이유를 만들고, 학습한 내용을 현재 시장에서 시험해볼 수 있게 확장합니다.",
   },
   {
     tag: "축 2",
-    title: "매일 다시 찾아올 이유",
+    title: "매일 투자 학습",
     description:
-      "오늘 코스피가 왜 이렇게 움직였는지 3~5줄로 요약해드려요. “이번 주 금리 동결 → 2022년 금리인상기 시나리오 체험하기”처럼 오늘의 뉴스가 과거 시나리오로 이어집니다.",
+      "오늘의 경제 뉴스 요약, 투자 퀴즈, 경제 개념, 주요 시장 이슈를 짧게 제공합니다. 왜 이런 일이 생겼는지, 과거 어떤 사례와 비슷한지 함께 보여줍니다.",
   },
   {
     tag: "축 3",
-    title: "체험과 지식의 순환",
+    title: "과거 위기 회귀 학습",
     description:
-      "방금 한 행동에 이름을 붙여드려요. 교과서식 설명이 아니라 “당신이 방금 한 행동”을 알려주는 경제 개념 카드로, 체험과 지식이 서로를 순환시킵니다.",
+      "IMF 외환위기, 금융위기, 코로나 폭락 당시로 들어가 공개된 정보만 보고 매수, 매도, 관망을 선택합니다. 선택 이유와 실제 결과를 비교하며 판단력을 기릅니다.",
   },
 ];
 
@@ -24,10 +24,10 @@ export function ConceptSection() {
     <section className="border-b border-border bg-surface">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6">
         <h2 className="text-center text-3xl font-bold sm:text-4xl">
-          체험하고, 기록하고, 다시 이해한다
+          매일 학습에서 실제 판단까지 이어지도록
         </h2>
         <p className="mt-4 text-center text-base text-muted">
-          &ldquo;그날의 나에게&rdquo;를 지탱하는 세 가지 축이에요.
+          전체 서비스는 세 가지 축으로 확장되고, 초기 MVP는 과거 위기 회귀 학습으로 검증합니다.
         </p>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
