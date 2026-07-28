@@ -79,6 +79,25 @@ export function ResultReport({
         <span>관망 {summary.holdCount}회</span>
       </div>
 
+      {scenario.keyConcepts && scenario.keyConcepts.length > 0 && (
+        <div className="mt-10">
+          <h3 className="px-1 text-sm font-semibold text-muted">
+            이 시나리오에서 알아두면 좋은 지식
+          </h3>
+          <div className="mt-3 space-y-3">
+            {scenario.keyConcepts.map((concept) => (
+              <div
+                key={concept.title}
+                className="rounded-2xl border border-border bg-surface p-4"
+              >
+                <span className="text-sm font-semibold text-accent">{concept.title}</span>
+                <p className="mt-1 text-sm leading-6 text-muted">{concept.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="mt-10 overflow-hidden rounded-2xl border border-border bg-surface">
         <h3 className="border-b border-border px-5 py-3 text-sm font-semibold">
           매매 타임라인

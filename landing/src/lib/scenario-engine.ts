@@ -9,6 +9,9 @@ export interface NewsArticle {
 export interface ScenarioDay {
   date: string;
   price: number;
+  /** Opening price for this day's chart. Only meaningful on the first day —
+   * every later day's "open" is simply the previous day's close. */
+  open?: number;
   headline: string;
   articles: NewsArticle[];
 }
@@ -16,6 +19,11 @@ export interface ScenarioDay {
 export interface PivotEvent {
   date: string;
   label: string;
+}
+
+export interface KeyConcept {
+  title: string;
+  description: string;
 }
 
 export interface Scenario {
@@ -29,6 +37,10 @@ export interface Scenario {
   days: ScenarioDay[];
   pivotEvent?: PivotEvent;
   checkpointAfterDay?: number;
+  /** Sets up who the player is playing as, shown once at the start. */
+  persona?: string;
+  /** Real economic concepts tied to this scenario, shown in the result report. */
+  keyConcepts?: KeyConcept[];
 }
 
 export function formatPivotContext(currentDate: string, pivot: PivotEvent): string {

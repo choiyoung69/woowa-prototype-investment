@@ -73,8 +73,8 @@ export function PriceSparkline({ prices }: { prices: number[] }) {
         <circle cx={lastX} cy={lastY} r={4.5} fill={color} />
       </svg>
       <div className="mt-2 flex justify-between text-[11px] text-muted">
-        <span>{prices[0].toLocaleString()}원 · 시작</span>
-        <span>{prices[prices.length - 1].toLocaleString()}원 · 오늘</span>
+        <span>{prices[0].toLocaleString()}원 · 시가</span>
+        <span>{prices[prices.length - 1].toLocaleString()}원 · 종가</span>
       </div>
     </div>
   );

@@ -75,7 +75,9 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
 
   const currentDay = scenario.days[Math.min(state.dayIndex, scenario.days.length - 1)];
   const previousDay = state.dayIndex > 0 ? scenario.days[state.dayIndex - 1] : null;
-  const pricesSoFar = scenario.days.slice(0, state.dayIndex + 1).map((d) => d.price);
+  const firstDayOpen = scenario.days[0]?.open;
+  const closePrices = scenario.days.slice(0, state.dayIndex + 1).map((d) => d.price);
+  const pricesSoFar = firstDayOpen !== undefined ? [firstDayOpen, ...closePrices] : closePrices;
   const totalValue = portfolioValue(state.portfolio, currentDay.price);
 
   if (state.finished) {
@@ -120,6 +122,13 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
           style={{ width: `${progress}%` }}
         />
       </div>
+
+      {state.dayIndex === 0 && scenario.persona && (
+        <div className="mt-5 rounded-2xl border border-accent/40 bg-accent/10 p-4">
+          <span className="text-xs font-semibold text-accent">당신은</span>
+          <p className="mt-1 text-sm leading-6">{scenario.persona}</p>
+        </div>
+      )}
 
       <div className="mt-4 flex items-center justify-between text-xs text-muted">
         <span>{scenario.title}</span>
