@@ -9,30 +9,10 @@ export const metadata: Metadata = {
 const featuredScenario = scenarios[0];
 const featuredDays = featuredScenario.days;
 
-const flowCards = [
-  {
-    title: "당시 뉴스로 판단",
-    description: "1997년 실제 상황을 바탕으로 한 뉴스 제공",
-    tone: "text-accent bg-[#e8f3ff]",
-    icon: "news",
-  },
-  {
-    title: "매수·매도·관망",
-    description: "매일 투자 결정을 선택하고 이유 기록",
-    tone: "text-down bg-[#fff1f3]",
-    icon: "trade",
-  },
-  {
-    title: "결과로 복기",
-    description: "내 선택의 결과와 놓친 신호 확인",
-    tone: "text-up bg-[#e9fbf2]",
-    icon: "review",
-  },
-];
-
-const detailTiles = [
-  { label: "체험 기간", value: "1997.11.19 ~ 1998.01.14 (5일)" },
-  { label: "진행률", value: "0 / 5일" },
+const imfInfoChips = [
+  { label: "핵심 사건", value: "IMF 구제금융 요청" },
+  { label: "관찰 신호", value: "환율 급등·자금 이탈" },
+  { label: "판단 범위", value: "당시 공개 정보만" },
 ];
 
 const navItems = ["홈", "오늘의 뉴스", "학습", "과거로 돌아가기", "포트폴리오", "내 정보"];
@@ -41,6 +21,8 @@ const issueFallbacks = [
   ["환율 급등", "외국인 자금 이탈", "시장 불안"],
   ["긴급 금리 인상", "신용경색", "주가 급락"],
   ["IMF 협상", "구제금융 임박", "시장 충격"],
+  ["구조조정", "긴축 조건", "고용 불안"],
+  ["금 모으기", "심리 회복", "반등 신호"],
 ];
 
 function ArrowIcon({ className = "h-5 w-5" }: { className?: string }) {
@@ -103,26 +85,6 @@ function BellIcon() {
   );
 }
 
-function CalendarIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-7 w-7"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M8 2v4" />
-      <path d="M16 2v4" />
-      <path d="M3 10h18" />
-      <path d="M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Z" />
-    </svg>
-  );
-}
-
 function FlowIcon({ type }: { type: string }) {
   if (type === "trade") {
     return (
@@ -181,19 +143,6 @@ function HeroIllustration() {
   );
 }
 
-function FlowCard({ card }: { card: (typeof flowCards)[number] }) {
-  return (
-    <div className="flex min-h-24 items-center gap-4 rounded-[12px] bg-background p-4">
-      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] ${card.tone}`}>
-        <FlowIcon type={card.icon} />
-      </div>
-      <div>
-        <p className="text-base font-black">{card.title}</p>
-      </div>
-    </div>
-  );
-}
-
 function ScenarioPathNode({
   day,
   index,
@@ -240,7 +189,7 @@ function ScenarioPathNode({
           <div className="mt-5 rounded-[16px] border border-border bg-surface p-5 shadow-sm">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-black text-accent">클릭한 날짜 정보</p>
+                <p className="text-sm font-black text-accent">IMF 위기 신호</p>
                 <h3 className="mt-2 text-2xl font-black">{titles[index]}</h3>
                 <p className="mt-3 text-sm font-bold leading-6 text-muted">
                   {descriptions[index]}
@@ -266,7 +215,7 @@ function ScenarioPathNode({
               href={`/scenario/${featuredScenario.id}`}
               className="mt-5 flex h-12 items-center justify-center rounded-[10px] bg-accent text-base font-black text-white transition hover:bg-[#1b64da]"
             >
-              1일차 시작하기
+              IMF 시나리오 시작하기
             </Link>
           </div>
         </details>
@@ -283,7 +232,7 @@ function ScenarioPathNode({
               {index}일차 완료 후 열려요
             </p>
             <p className="mt-2 text-sm font-bold text-muted">
-              이전 날짜를 진행하기 전에는 날짜 정보와 주요 이슈를 공개하지 않습니다.
+              이전 흐름을 진행하기 전에는 다음 IMF 신호를 공개하지 않습니다.
             </p>
           </div>
         </div>
@@ -331,22 +280,25 @@ export default function ScenariosPage() {
       </header>
 
       <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
-        <section className="rounded-[18px] border border-border bg-surface p-6 shadow-sm sm:p-8">
-          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+        <section className="rounded-[18px] border border-border bg-surface p-5 shadow-sm sm:p-6">
+          <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
             <div>
               <p className="text-sm font-black text-accent">오늘 바로 경험할 경제 사건</p>
-              <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">
+              <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
                 IMF 외환위기,
                 <br />
                 그날의 정보만 보고 판단해 보세요
               </h1>
-              <p className="mt-5 max-w-xl text-lg font-bold leading-8 text-muted">
+              <p className="mt-4 max-w-xl text-base font-bold leading-7 text-muted">
                 결과를 모르는 상태에서 당시 공개된 뉴스와 지표만 확인하고 매수·매도·관망을 선택합니다.
               </p>
 
-              <div className="mt-8 grid gap-4 md:grid-cols-3">
-                {flowCards.map((card) => (
-                  <FlowCard key={card.title} card={card} />
+              <div className="mt-5 flex flex-wrap gap-2">
+                {imfInfoChips.map((chip) => (
+                  <div key={chip.label} className="rounded-full bg-[#f4f8ff] px-4 py-2">
+                    <span className="text-xs font-black text-accent">{chip.label}</span>
+                    <span className="ml-2 text-sm font-black">{chip.value}</span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -354,23 +306,17 @@ export default function ScenariosPage() {
             <HeroIllustration />
           </div>
 
-          <div className="mt-7 grid gap-4 lg:grid-cols-[1fr_1fr_auto]">
-            {detailTiles.map((tile, index) => (
-              <div key={tile.label} className="flex items-center gap-4 rounded-[12px] bg-[#f4f8ff] p-4">
-                <div className="text-[#191f28]">
-                  {index === 0 ? <CalendarIcon /> : <LogoIcon />}
-                </div>
-                <div>
-                  <p className="text-sm font-black text-muted">{tile.label}</p>
-                  <p className="mt-1 text-base font-black">{tile.value}</p>
-                </div>
-              </div>
-            ))}
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[12px] bg-[#f4f8ff] p-3">
+            <div className="flex flex-wrap gap-x-5 gap-y-2 px-1 text-sm font-black">
+              <span className="text-muted">IMF 외환위기 (1997)</span>
+              <span>1997.11.19 ~ 1998.01.14</span>
+              <span className="text-accent">0 / 5일</span>
+            </div>
             <Link
               href="#scenario-path"
-              className="flex min-h-16 items-center justify-center gap-3 rounded-[12px] bg-accent px-8 text-lg font-black text-white transition hover:bg-[#1b64da]"
+              className="flex min-h-12 items-center justify-center gap-2 rounded-[10px] bg-accent px-5 text-base font-black text-white transition hover:bg-[#1b64da]"
             >
-              1일차 정보 보기
+              IMF 흐름 보기
               <ArrowIcon />
             </Link>
           </div>
@@ -379,7 +325,7 @@ export default function ScenariosPage() {
         <section id="scenario-path" className="mt-8 scroll-mt-6">
           <h2 className="text-2xl font-black">시나리오 선택</h2>
           <p className="mt-3 text-base font-bold text-muted">
-            노드를 눌러 날짜 정보를 확인하세요. 이전 날짜를 완료해야 다음 정보가 열립니다.
+            노드를 눌러 IMF 위기 흐름을 확인하세요. 이전 흐름을 완료해야 다음 신호가 열립니다.
           </p>
 
           <div className="mt-8 rounded-[18px] border border-border bg-[#f7f9fc] px-4 py-8 sm:px-8">
