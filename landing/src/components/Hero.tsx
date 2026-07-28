@@ -30,7 +30,7 @@ export function Hero() {
 
         <div className="mt-10 flex flex-col items-center gap-4">
           <Link
-            href="/scenario/imf-crisis"
+            href="/scenarios"
             className="rounded-lg bg-accent px-8 py-4 text-base font-semibold text-accent-foreground transition hover:brightness-110"
           >
             지금 체험하기 →

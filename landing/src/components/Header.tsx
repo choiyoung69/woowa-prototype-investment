@@ -15,7 +15,7 @@ export function Header() {
             출시 알림 받기
           </Link>
           <Link
-            href="/scenario/imf-crisis"
+            href="/scenarios"
             className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground transition hover:brightness-110"
           >
             지금 체험하기
