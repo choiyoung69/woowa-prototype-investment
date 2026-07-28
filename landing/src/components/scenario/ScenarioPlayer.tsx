@@ -106,13 +106,11 @@ function Shell({
   scenario,
   dayIndex,
   phase,
-  portfolioValueText,
   children,
 }: {
   scenario: Scenario;
   dayIndex: number;
   phase: Phase;
-  portfolioValueText: string;
   children: React.ReactNode;
 }) {
   return (
@@ -168,66 +166,8 @@ function Shell({
             </Link>
           </div>
 
-          {phase === "intro" && (
-            <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-[1fr_260px]">
-              <ProgressPanel scenario={scenario} dayIndex={dayIndex} />
-              <PortfolioMini value={portfolioValueText} />
-            </div>
-          )}
-
           <div className="mt-6">{children}</div>
         </main>
-      </div>
-    </div>
-  );
-}
-
-function ProgressPanel({
-  scenario,
-  dayIndex,
-}: {
-  scenario: Scenario;
-  dayIndex: number;
-}) {
-  return (
-    <div className="min-w-0 overflow-hidden rounded-[12px] border border-border bg-surface p-4">
-      <div className="flex max-w-full items-center gap-3 overflow-x-auto pb-1">
-        {scenario.days.map((day, index) => {
-          const active = index === dayIndex;
-          const done = index < dayIndex;
-
-          return (
-            <div key={day.date} className="flex min-w-[90px] items-center gap-3 sm:min-w-[104px]">
-              <div
-                className={`rounded-[14px] border p-4 ${
-                  active
-                    ? "border-accent bg-[#e8f3ff] text-accent"
-                    : done
-                      ? "border-border bg-background text-muted"
-                      : "border-border bg-surface-2 text-muted"
-                }`}
-              >
-                <p className="text-xs font-black">{index + 1}일차</p>
-                <p className="mt-1 text-sm font-bold">{day.date.slice(5)}</p>
-              </div>
-              {index < scenario.days.length - 1 && (
-                <span className="hidden h-px w-8 bg-border sm:block" />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function PortfolioMini({ value }: { value: string }) {
-  return (
-    <div className="min-w-0 overflow-hidden rounded-[12px] border border-border bg-surface p-4">
-      <p className="text-xs font-bold text-muted">현재 총 자산</p>
-      <p className="mt-2 text-2xl font-black">{value}</p>
-      <div className="mt-4 h-2 overflow-hidden rounded-full bg-surface-2">
-        <div className="h-full w-1/3 rounded-full bg-accent" />
       </div>
     </div>
   );
@@ -249,6 +189,18 @@ function IntroStep({
 
   return (
     <div className="space-y-4">
+      {scenario.persona && (
+        <section className="rounded-[16px] bg-[#e8f3ff] p-5 sm:p-6">
+          <p className="text-sm font-black text-accent">이번 판단에서 당신의 입장</p>
+          <h2 className="mt-2 text-2xl font-black leading-tight sm:text-3xl">
+            당신은 1997년의 투자자입니다
+          </h2>
+          <p className="mt-4 break-keep text-lg font-black leading-8 text-[#1b64da] sm:text-xl">
+            {scenario.persona}
+          </p>
+        </section>
+      )}
+
       <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
         <section className="min-w-0 rounded-[12px] border border-border bg-surface p-5">
           <p className="text-sm font-bold text-accent">1. 시나리오 확인</p>
@@ -264,12 +216,6 @@ function IntroStep({
                   {item}
                 </div>
               ))}
-            </div>
-          )}
-          {scenario.persona && (
-            <div className="mt-4 rounded-[12px] bg-[#e8f3ff] p-4">
-              <p className="text-xs font-black text-accent">당신의 상황</p>
-              <p className="mt-1 text-sm font-bold leading-6">{scenario.persona}</p>
             </div>
           )}
         </section>
@@ -704,7 +650,6 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
       scenario={scenario}
       dayIndex={state.dayIndex}
       phase={phase}
-      portfolioValueText={formatKrw(totalValue)}
     >
       {phase === "intro" && (
         <IntroStep scenario={scenario} onStart={() => setPhase("mission")} />
