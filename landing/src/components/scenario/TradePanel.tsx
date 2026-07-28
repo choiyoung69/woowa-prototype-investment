@@ -12,9 +12,15 @@ const actionLabels: Record<TradeAction, string> = {
 };
 
 const actionButtonClass: Record<TradeAction, string> = {
-  buy: "bg-up/10 text-up hover:bg-up/15",
-  sell: "bg-down/10 text-down hover:bg-down/15",
-  hold: "bg-surface text-foreground ring-1 ring-border hover:bg-surface-2",
+  buy: "border-up/20 bg-up/10 text-up hover:bg-up/15",
+  sell: "border-down/20 bg-down/10 text-down hover:bg-down/15",
+  hold: "border-border bg-surface text-foreground hover:bg-surface-2",
+};
+
+const actionDescriptions: Record<TradeAction, string> = {
+  buy: "지금 가격이 충분히 낮다고 판단해요",
+  sell: "더 하락할 가능성이 크다고 판단해요",
+  hold: "정보가 부족해서 지켜볼래요",
 };
 
 export function TradePanel({
@@ -30,15 +36,25 @@ export function TradePanel({
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="space-y-3">
         {(["buy", "sell", "hold"] as TradeAction[]).map((type) => (
           <button
             key={type}
             type="button"
             onClick={() => setOpenAction(type)}
-            className={`rounded-[8px] py-4 text-base font-bold transition ${actionButtonClass[type]}`}
+            className={`flex w-full items-center gap-4 rounded-[12px] border p-4 text-left transition ${actionButtonClass[type]}`}
           >
-            {actionLabels[type]}
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-current/10 text-xl">
+              {type === "buy" ? "↗" : type === "sell" ? "↘" : "Ⅱ"}
+            </span>
+            <span>
+              <span className="block text-base font-black">
+                {actionLabels[type]}하기
+              </span>
+              <span className="mt-0.5 block text-sm font-bold opacity-70">
+                {actionDescriptions[type]}
+              </span>
+            </span>
           </button>
         ))}
       </div>
