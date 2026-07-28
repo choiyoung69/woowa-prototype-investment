@@ -12,6 +12,14 @@ export interface ScenarioDay {
   /** Opening price for this day's chart. Only meaningful on the first day —
    * every later day's "open" is simply the previous day's close. */
   open?: number;
+  high?: number;
+  low?: number;
+  fxRate?: number;
+  foreignFlow?: number;
+  bondYield?: number;
+  tradingVolume?: string;
+  tradingValue?: string;
+  intraday?: number[];
   headline: string;
   articles: NewsArticle[];
 }

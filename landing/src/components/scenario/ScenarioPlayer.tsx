@@ -69,6 +69,13 @@ function formatKrw(value: number) {
   return `${Math.round(value).toLocaleString()}원`;
 }
 
+function formatNumber(value: number, maximumFractionDigits = 2) {
+  return value.toLocaleString("ko-KR", {
+    minimumFractionDigits: Number.isInteger(value) ? 0 : Math.min(maximumFractionDigits, 2),
+    maximumFractionDigits,
+  });
+}
+
 function formatKoreanDate(value: string) {
   const [year, month, day] = value.split("-");
   return `${year}년 ${Number(month)}월 ${Number(day)}일`;
@@ -91,14 +98,16 @@ function changeFromOpen(day: ScenarioDay) {
 }
 
 function makeSessionPrices(day: ScenarioDay) {
+  if (day.intraday && day.intraday.length > 1) return day.intraday;
+
   const { open } = changeFromOpen(day);
   const close = day.price;
   const gap = close - open;
-  return Array.from({ length: 18 }, (_, index) => {
-    const progress = index / 17;
+  return Array.from({ length: 48 }, (_, index) => {
+    const progress = index / 47;
     const wave = Math.sin(progress * Math.PI * 3) * Math.abs(gap) * 0.08;
     const shake = ((index % 4) - 1.5) * Math.abs(gap) * 0.025;
-    return Math.round(open + gap * progress + wave + shake);
+    return Number((open + gap * progress + wave + shake).toFixed(2));
   });
 }
 
@@ -411,12 +420,12 @@ function MarketChart({ day }: { day: ScenarioDay }) {
         <div>
           <p className="text-sm font-black text-muted">{scenarioMarketName}</p>
           <p className="mt-1 text-4xl font-black tracking-tight">
-            {day.price.toLocaleString()}
+            {formatNumber(day.price)}
           </p>
         </div>
         <p className={`pb-1 text-lg font-black ${trendUp ? "text-up" : "text-down"}`}>
           {diff > 0 ? "+" : ""}
-          {diff.toLocaleString()} ({pct > 0 ? "+" : ""}
+          {formatNumber(diff)} ({pct > 0 ? "+" : ""}
           {pct.toFixed(2)}%)
         </p>
       </div>
@@ -493,22 +502,38 @@ function MarketStats({
   cash: number;
 }) {
   const { open } = changeFromOpen(day);
-  const low = Math.min(...makeSessionPrices(day));
-  const high = Math.max(...makeSessionPrices(day));
-  const fxRate = Math.round(day.price * 0.154 + 5);
-  const foreignFlow = Math.round((open - day.price) * 2.7);
+  const sessionPrices = makeSessionPrices(day);
+  const low = day.low ?? Math.min(...sessionPrices);
+  const high = day.high ?? Math.max(...sessionPrices);
+  const fxRate = day.fxRate;
+  const foreignFlow = day.foreignFlow;
+  const foreignTone = foreignFlow === undefined ? undefined : foreignFlow >= 0 ? "up" : "down";
+  const foreignLabel =
+    foreignFlow === undefined ? "외국인 수급" : foreignFlow >= 0 ? "외국인 순매수" : "외국인 순매도";
+  const foreignValue =
+    foreignFlow === undefined
+      ? "-"
+      : `${foreignFlow > 0 ? "+" : ""}${foreignFlow.toLocaleString("ko-KR")}억원`;
 
   return (
     <div className="rounded-[12px] border border-border bg-surface p-4 shadow-sm">
       <p className="text-sm font-black text-muted">시장 요약</p>
       <div className="mt-3 grid gap-2">
-        <CompactMetric label="시가" value={open.toLocaleString()} />
-        <CompactMetric label="고가" value={high.toLocaleString()} />
-        <CompactMetric label="저가" value={low.toLocaleString()} />
-        <CompactMetric label="원/달러 환율" value={`${fxRate.toLocaleString()}원`} />
-        <CompactMetric label="외국인 순매도" value={`-${foreignFlow.toLocaleString()}억원`} tone="down" />
+        <CompactMetric label="시가" value={formatNumber(open)} />
+        <CompactMetric label="고가" value={formatNumber(high)} />
+        <CompactMetric label="저가" value={formatNumber(low)} />
+        <CompactMetric
+          label="원/달러 환율"
+          value={fxRate === undefined ? "-" : `${formatNumber(fxRate)}원`}
+        />
+        <CompactMetric label={foreignLabel} value={foreignValue} tone={foreignTone} />
+        <CompactMetric
+          label="국고채 3년"
+          value={day.bondYield === undefined ? "-" : `${formatNumber(day.bondYield)}%`}
+          tone={day.bondYield && day.bondYield >= 20 ? "down" : undefined}
+        />
+        <CompactMetric label="거래대금" value={day.tradingValue ?? "-"} />
         <CompactMetric label="보유 현금" value={formatKrw(cash)} />
-        <CompactMetric label="판단 기준" value="뉴스·지표" />
       </div>
     </div>
   );
