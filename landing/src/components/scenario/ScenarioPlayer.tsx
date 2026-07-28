@@ -20,7 +20,7 @@ import { TradePanel } from "./TradePanel";
 import { CheckpointScreen } from "./CheckpointScreen";
 import { ResultReport } from "./ResultReport";
 
-type Phase = "mission" | "trade";
+type Phase = "intro" | "mission" | "trade";
 
 interface PlayerState {
   dayIndex: number;
@@ -129,6 +129,7 @@ function Shell({
                 {scenario.title} · {dayIndex + 1}일차
               </p>
               <h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
+                {phase === "intro" && "시나리오 준비"}
                 {phase === "mission" && "오늘의 학습 미션"}
                 {phase === "trade" && "투자 결정하기"}
               </h1>
@@ -204,20 +205,14 @@ function PortfolioMini({ value }: { value: string }) {
   );
 }
 
-function MissionStep({
+function IntroStep({
   scenario,
-  day,
-  dayNumber,
-  prices,
   onStart,
 }: {
   scenario: Scenario;
-  day: ScenarioDay;
-  dayNumber: number;
-  prices: number[];
   onStart: () => void;
 }) {
-  const current = scenario.knowledge?.currentParallels[0];
+  const keywords = scenario.knowledge?.keywords ?? [];
   const learningGoals = scenario.learningGoals ?? [
     "당시 뉴스 3개 이상 확인하기",
     "시장 지표가 왜 움직였는지 추론하기",
@@ -228,13 +223,9 @@ function MissionStep({
     <div className="space-y-4">
       <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
         <section className="min-w-0 rounded-[12px] border border-border bg-surface p-5">
-          <p className="text-sm font-bold text-accent">2. 미션 확인</p>
-          <h2 className="mt-2 text-2xl font-black">
-            오늘은 {formatKoreanDate(day.date)}입니다
-          </h2>
-          <p className="mt-3 text-sm font-bold leading-6 text-muted">
-            결과를 모르는 상태에서 오늘 공개된 정보만 보고 판단합니다.
-          </p>
+          <p className="text-sm font-bold text-accent">1. 시나리오 확인</p>
+          <h2 className="mt-2 text-2xl font-black">{scenario.title}</h2>
+          <p className="mt-3 text-sm font-bold leading-6 text-muted">{scenario.description}</p>
           {scenario.knowledge && (
             <div className="mt-4 grid grid-cols-3 gap-2">
               {scenario.knowledge.summary.map((item) => (
@@ -247,12 +238,10 @@ function MissionStep({
               ))}
             </div>
           )}
-          {scenario.persona && dayNumber === 1 && (
+          {scenario.persona && (
             <div className="mt-4 rounded-[12px] bg-[#e8f3ff] p-4">
               <p className="text-xs font-black text-accent">당신의 상황</p>
-              <p className="mt-1 line-clamp-2 text-sm font-bold leading-6">
-                {scenario.persona}
-              </p>
+              <p className="mt-1 text-sm font-bold leading-6">{scenario.persona}</p>
             </div>
           )}
         </section>
@@ -272,6 +261,63 @@ function MissionStep({
         </section>
       </div>
 
+      {keywords.length > 0 && (
+        <section className="rounded-[12px] border border-border bg-surface p-5">
+          <p className="text-sm font-black text-muted">이번 시나리오 키워드</p>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {keywords.map((keyword) => (
+              <div key={keyword.term} className="rounded-[12px] bg-background p-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-[#e8f3ff] px-3 py-1.5 text-sm font-black text-accent">
+                    {keyword.term}
+                  </span>
+                  <span className="text-sm font-black">{keyword.meaning}</span>
+                </div>
+                {keyword.detail && (
+                  <p className="mt-3 text-sm font-bold leading-6 text-muted">
+                    {keyword.detail}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <button
+        type="button"
+        onClick={onStart}
+        className="w-full rounded-[12px] bg-accent px-4 py-4 text-sm font-black text-white transition hover:bg-[#1b64da] sm:px-5 sm:text-base"
+      >
+        실제 시나리오 시작하기
+      </button>
+    </div>
+  );
+}
+
+function MissionStep({
+  scenario,
+  day,
+  prices,
+  onStart,
+}: {
+  scenario: Scenario;
+  day: ScenarioDay;
+  prices: number[];
+  onStart: () => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <section className="rounded-[12px] border border-border bg-surface p-5">
+        <p className="text-sm font-bold text-accent">2. 실제 시나리오</p>
+        <h2 className="mt-2 text-2xl font-black">
+          오늘은 {formatKoreanDate(day.date)}입니다
+        </h2>
+        <p className="mt-3 text-sm font-bold leading-6 text-muted">
+          {day.headline}
+        </p>
+      </section>
+
       <section className="grid gap-4 rounded-[12px] border border-border bg-surface p-5 lg:grid-cols-[1fr_280px]">
         <div className="min-w-0">
           <div className="flex flex-wrap items-start justify-between gap-3">
@@ -286,48 +332,11 @@ function MissionStep({
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             <MetricTile label="현재가" value={`${day.price.toLocaleString()}원`} />
             <MetricTile label="보유 현금" value={formatKrw(scenario.startingCash)} />
-            <MetricTile label="오늘 키워드" value={scenario.knowledge?.keywords[0]?.term ?? "시장 판단"} />
+            <MetricTile label="판단 기준" value="뉴스·지표" />
           </div>
         </div>
         <PriceSparkline prices={prices} />
       </section>
-
-      {scenario.knowledge && (
-        <section className="grid gap-3 md:grid-cols-[1fr_1fr_1.1fr]">
-          <div className="rounded-[12px] bg-[#e8f3ff] p-4">
-            <p className="text-xs font-black text-accent">내용 요약</p>
-            <p className="mt-2 break-keep text-lg font-black">
-              {scenario.knowledge.summary.join(" → ")}
-            </p>
-          </div>
-          <div className="rounded-[12px] bg-surface p-4">
-            <p className="text-xs font-black text-muted">오늘 볼 키워드</p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {scenario.knowledge.keywords.map((keyword) => (
-                <span
-                  key={keyword.term}
-                  className="rounded-full bg-surface-2 px-2.5 py-1 text-xs font-black"
-                  title={keyword.detail}
-                >
-                  {keyword.term}
-                </span>
-              ))}
-            </div>
-          </div>
-          {current && (
-            <a
-              href={current.href}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[12px] bg-surface p-4 transition hover:bg-surface-2"
-            >
-              <p className="text-xs font-black text-muted">요즘 비슷한 뉴스</p>
-              <p className="mt-2 line-clamp-2 text-sm font-black">{current.title}</p>
-              <p className="mt-1 text-xs font-bold text-accent">{current.source}</p>
-            </a>
-          )}
-        </section>
-      )}
 
       <section className="overflow-hidden rounded-[12px] border border-border bg-surface">
         <div className="border-b border-border px-5 py-4">
@@ -427,7 +436,7 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
     finished: false,
   });
   const [checkpointDismissed, setCheckpointDismissed] = useState(false);
-  const [phase, setPhase] = useState<Phase>("mission");
+  const [phase, setPhase] = useState<Phase>("intro");
 
   const currentDay = scenario.days[Math.min(state.dayIndex, scenario.days.length - 1)];
   const firstDayOpen = scenario.days[0]?.open;
@@ -435,7 +444,6 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
   const pricesSoFar = firstDayOpen !== undefined ? [firstDayOpen, ...closePrices] : closePrices;
   const totalValue = portfolioValue(state.portfolio, currentDay.price);
   const positionValue = state.portfolio.units * currentDay.price;
-  const dayNumber = state.dayIndex + 1;
 
   if (state.finished) {
     const summary = summarize(state.tradeLog, totalValue, scenario.startingCash);
@@ -468,11 +476,14 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
       phase={phase}
       portfolioValueText={formatKrw(totalValue)}
     >
+      {phase === "intro" && (
+        <IntroStep scenario={scenario} onStart={() => setPhase("mission")} />
+      )}
+
       {phase === "mission" && (
         <MissionStep
           scenario={scenario}
           day={currentDay}
-          dayNumber={dayNumber}
           prices={pricesSoFar}
           onStart={() => setPhase("trade")}
         />
