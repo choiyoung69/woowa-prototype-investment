@@ -14,7 +14,7 @@ const actionLabels: Record<TradeAction, string> = {
 const actionButtonClass: Record<TradeAction, string> = {
   buy: "bg-up/10 text-up hover:bg-up/15",
   sell: "bg-down/10 text-down hover:bg-down/15",
-  hold: "bg-surface-2 text-foreground hover:bg-surface-2/70",
+  hold: "bg-surface text-foreground ring-1 ring-border hover:bg-surface-2",
 };
 
 export function TradePanel({
@@ -36,7 +36,7 @@ export function TradePanel({
             key={type}
             type="button"
             onClick={() => setOpenAction(type)}
-            className={`rounded-2xl py-4 text-base font-semibold transition ${actionButtonClass[type]}`}
+            className={`rounded-[8px] py-4 text-base font-bold transition ${actionButtonClass[type]}`}
           >
             {actionLabels[type]}
           </button>
@@ -99,16 +99,16 @@ function TradeSheet({
   }
 
   return (
-    <div className="fixed inset-0 z-20 flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+    <div className="fixed inset-0 z-20 flex items-end justify-center bg-black/35 backdrop-blur-sm sm:items-center">
       <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
 
-      <div className="relative w-full max-w-md rounded-t-3xl border border-border bg-surface p-6 sm:rounded-3xl">
+      <div className="relative w-full max-w-md rounded-t-[20px] border border-border bg-surface p-6 shadow-2xl sm:rounded-[16px]">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-bold">{actionLabels[action]}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1 text-muted hover:text-foreground"
+            className="rounded-full p-1 text-muted hover:bg-surface-2 hover:text-foreground"
             aria-label="닫기"
           >
             ✕
@@ -128,13 +128,13 @@ function TradeSheet({
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
                 placeholder="금액 입력 (원)"
-                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-base focus:border-accent focus:outline-none"
+                className="w-full rounded-[8px] border border-border bg-background px-4 py-3 text-base focus:border-accent focus:outline-none"
                 autoFocus
               />
               <button
                 type="button"
                 onClick={() => setAmount(String(Math.floor(maxAmount)))}
-                className="shrink-0 rounded-xl border border-border px-3 py-3 text-xs text-muted hover:border-accent hover:text-accent"
+                className="shrink-0 rounded-[8px] border border-border px-3 py-3 text-xs font-bold text-muted hover:border-accent hover:text-accent"
               >
                 전액
               </button>
@@ -154,7 +154,7 @@ function TradeSheet({
                 onClick={() => setTagId(tagId === tag.id ? null : tag.id)}
                 className={`rounded-full border px-3 py-1.5 text-xs transition ${
                   tagId === tag.id
-                    ? "border-accent bg-accent/10 text-accent"
+                    ? "border-accent bg-[#e8f3ff] text-accent"
                     : "border-border text-muted hover:border-foreground/30"
                 }`}
               >
@@ -176,7 +176,7 @@ function TradeSheet({
             onChange={(event) => setReason(event.target.value)}
             rows={2}
             placeholder="예: 더 떨어질 것 같아서 무서웠어요"
-            className="mt-1 w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm focus:border-accent focus:outline-none"
+            className="mt-1 w-full resize-none rounded-[8px] border border-border bg-background px-4 py-3 text-sm focus:border-accent focus:outline-none"
           />
         </div>
 
@@ -184,7 +184,7 @@ function TradeSheet({
           type="button"
           onClick={handleConfirm}
           disabled={!canConfirm}
-          className="mt-6 w-full rounded-xl bg-accent py-4 text-base font-semibold text-accent-foreground transition hover:brightness-110 disabled:opacity-40"
+          className="mt-6 w-full rounded-[8px] bg-accent py-4 text-base font-bold text-accent-foreground transition hover:bg-[#1b64da] disabled:opacity-40"
         >
           {actionLabels[action]} 확정하고 다음 날로
         </button>

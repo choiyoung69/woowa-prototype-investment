@@ -10,7 +10,7 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
         {articles.map((article, index) => (
           <div
             key={index}
-            className="rounded-2xl border border-border bg-surface p-4"
+            className="rounded-[8px] border border-border bg-surface p-4 shadow-sm"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-muted">{article.source}</span>

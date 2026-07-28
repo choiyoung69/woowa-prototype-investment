@@ -5,7 +5,7 @@ export function ConceptPopover({ tagId }: { tagId: string }) {
   if (!tag) return null;
 
   return (
-    <div className="rounded-lg border border-accent/40 bg-accent/10 p-3 text-xs leading-5">
+    <div className="rounded-[8px] bg-[#e8f3ff] p-3 text-xs leading-5">
       <span className="font-semibold text-accent">{tag.label}</span>
       <span className="text-muted"> · {tag.description}</span>
     </div>

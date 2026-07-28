@@ -48,9 +48,9 @@ export function CheckpointScreen({
   }
 
   return (
-    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-3xl border border-border bg-surface p-6">
-        <span className="rounded-full border border-border px-3 py-1 text-xs text-muted">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/35 p-6 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-[16px] border border-border bg-surface p-6 shadow-2xl">
+        <span className="rounded-[8px] bg-surface-2 px-3 py-1 text-xs font-bold text-muted">
           {dayNumber}일차 체크포인트
         </span>
 
@@ -62,7 +62,7 @@ export function CheckpointScreen({
         ) : (
           <div className="mt-3 space-y-2">
             {learnedTags.map((tag) => (
-              <div key={tag.id} className="rounded-xl border border-border bg-background p-3">
+              <div key={tag.id} className="rounded-[8px] border border-border bg-background p-3">
                 <span className="text-sm font-semibold text-accent">{tag.label}</span>
                 <p className="mt-1 text-xs leading-5 text-muted">{tag.description}</p>
               </div>
@@ -70,7 +70,7 @@ export function CheckpointScreen({
           </div>
         )}
 
-        <div className="mt-6 rounded-2xl border border-accent/40 bg-accent/10 p-4">
+        <div className="mt-6 rounded-[8px] bg-[#e8f3ff] p-4">
           <p className="text-xs text-muted">지금까지의 당신은</p>
           <p className="mt-1 text-xl font-bold text-accent">{investorType.label}</p>
           <p className="mt-1 text-sm leading-6">{investorType.description}</p>
@@ -80,14 +80,14 @@ export function CheckpointScreen({
           <button
             type="button"
             onClick={handleSaveCard}
-            className="flex-1 rounded-xl border border-border py-3 text-sm font-semibold text-muted transition hover:border-accent hover:text-accent"
+            className="flex-1 rounded-[8px] border border-border py-3 text-sm font-bold text-muted transition hover:border-accent hover:text-accent"
           >
             {copied ? "링크가 복사됐어요" : "카드 저장"}
           </button>
           <button
             type="button"
             onClick={onContinue}
-            className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-accent-foreground transition hover:brightness-110"
+            className="flex-1 rounded-[8px] bg-accent py-3 text-sm font-bold text-accent-foreground transition hover:bg-[#1b64da]"
           >
             계속하기 →
           </button>

@@ -115,8 +115,8 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
   const changeUp = changePct >= 0;
 
   return (
-    <div className="mx-auto max-w-2xl px-6 pb-16 pt-8">
-      <div className="h-1 w-full overflow-hidden rounded-full bg-surface-2">
+    <div className="mx-auto max-w-2xl px-5 pb-16 pt-8 sm:px-6">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
         <div
           className="h-full rounded-full bg-accent transition-all"
           style={{ width: `${progress}%` }}
@@ -124,8 +124,8 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
       </div>
 
       {state.dayIndex === 0 && scenario.persona && (
-        <div className="mt-5 rounded-2xl border border-accent/40 bg-accent/10 p-4">
-          <span className="text-xs font-semibold text-accent">당신은</span>
+        <div className="mt-5 rounded-[8px] bg-[#e8f3ff] p-4">
+          <span className="text-xs font-bold text-accent">당신은</span>
           <p className="mt-1 text-sm leading-6">{scenario.persona}</p>
         </div>
       )}
@@ -144,7 +144,7 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
         </p>
       )}
 
-      <p className="mt-4 text-lg font-semibold leading-7">{currentDay.headline}</p>
+      <p className="mt-4 text-xl font-bold leading-8">{currentDay.headline}</p>
 
       <div className="mt-4 flex items-end gap-3">
         <span className="text-4xl font-bold tracking-tight">
@@ -167,7 +167,7 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
         <PriceSparkline prices={pricesSoFar} />
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-3 rounded-3xl border border-border bg-surface p-5 text-center text-sm">
+      <div className="mt-6 grid grid-cols-3 gap-3 rounded-[8px] border border-border bg-surface p-5 text-center text-sm shadow-sm">
         <div>
           <p className="text-xs text-muted">현금</p>
           <p className="mt-1.5 font-semibold">

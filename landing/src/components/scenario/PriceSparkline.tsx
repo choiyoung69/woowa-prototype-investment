@@ -4,7 +4,7 @@ export function PriceSparkline({ prices }: { prices: number[] }) {
   const gradientId = useId();
 
   if (prices.length === 0) {
-    return <div className="h-40 w-full rounded-2xl border border-border bg-surface" />;
+    return <div className="h-40 w-full rounded-[8px] border border-border bg-surface" />;
   }
 
   const width = 600;
@@ -35,7 +35,7 @@ export function PriceSparkline({ prices }: { prices: number[] }) {
   const lastY = toY(prices[prices.length - 1]);
 
   return (
-    <div className="rounded-2xl border border-border bg-surface p-4">
+    <div className="rounded-[8px] border border-border bg-surface p-4 shadow-sm">
       <svg
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="none"

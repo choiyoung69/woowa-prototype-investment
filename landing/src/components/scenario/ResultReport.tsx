@@ -50,7 +50,7 @@ export function ResultReport({
   const topTag = summary.topTag ? getEmotionTag(summary.topTag) : null;
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16">
+    <div className="mx-auto max-w-2xl px-5 py-16 sm:px-6">
       <p className="text-center text-sm text-muted">{scenario.title} 결과</p>
       <p
         className={`mt-2 text-center text-5xl font-bold ${isPositive ? "text-up" : "text-down"}`}
@@ -88,7 +88,7 @@ export function ResultReport({
             {scenario.keyConcepts.map((concept) => (
               <div
                 key={concept.title}
-                className="rounded-2xl border border-border bg-surface p-4"
+                className="rounded-[8px] border border-border bg-surface p-4 shadow-sm"
               >
                 <span className="text-sm font-semibold text-accent">{concept.title}</span>
                 <p className="mt-1 text-sm leading-6 text-muted">{concept.description}</p>
@@ -98,7 +98,7 @@ export function ResultReport({
         </div>
       )}
 
-      <div className="mt-10 overflow-hidden rounded-2xl border border-border bg-surface">
+      <div className="mt-10 overflow-hidden rounded-[8px] border border-border bg-surface shadow-sm">
         <h3 className="border-b border-border px-5 py-3 text-sm font-semibold">
           매매 타임라인
         </h3>
@@ -136,7 +136,7 @@ export function ResultReport({
         <button
           type="button"
           onClick={handleCopy}
-          className="rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition hover:brightness-110"
+          className="rounded-[8px] bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition hover:bg-[#1b64da]"
         >
           {copied ? "링크가 복사됐어요" : "결과 공유 링크 복사"}
         </button>

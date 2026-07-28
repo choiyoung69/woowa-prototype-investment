@@ -88,12 +88,12 @@ export function EmailForm({
           placeholder="you@email.com"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="w-full flex-1 rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+          className="w-full flex-1 rounded-[8px] border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="shrink-0 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition hover:brightness-110 disabled:opacity-60"
+          className="shrink-0 rounded-[8px] bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition hover:bg-[#1b64da] disabled:opacity-60"
         >
           {status === "loading" ? "등록 중..." : ctaLabel}
         </button>

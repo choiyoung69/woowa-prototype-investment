@@ -21,19 +21,19 @@ function CellIcon({ value }: { value: Cell }) {
 
 export function ComparisonSection() {
   return (
-    <section className="border-b border-border bg-surface/40">
-      <div className="mx-auto max-w-3xl px-6 py-20">
-        <h2 className="text-center text-2xl font-bold sm:text-3xl">
+    <section className="border-b border-border bg-background">
+      <div className="mx-auto max-w-4xl px-5 py-20 sm:px-6">
+        <h2 className="text-center text-3xl font-bold sm:text-4xl">
           기존 서비스와는 다른 조합
         </h2>
-        <p className="mt-3 text-center text-sm text-muted sm:text-base">
+        <p className="mt-4 text-center text-base text-muted">
           모의투자 앱은 체험만, 뉴스레터는 지식만 있었어요.
         </p>
 
-        <div className="mt-10 overflow-x-auto rounded-2xl border border-border">
+        <div className="mt-10 overflow-x-auto rounded-[8px] border border-border bg-surface shadow-sm">
           <table className="w-full min-w-[480px] border-collapse text-sm">
             <thead>
-              <tr className="border-b border-border bg-surface text-left">
+              <tr className="border-b border-border bg-surface-2 text-left">
                 <th className="px-4 py-3 font-medium text-muted">항목</th>
                 <th className="px-4 py-3 text-center font-medium text-muted">
                   모의투자 앱

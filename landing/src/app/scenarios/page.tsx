@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 
 export default function ScenariosPage() {
   return (
-    <div className="mx-auto max-w-md px-6 py-16">
-      <h1 className="text-center text-2xl font-bold sm:text-3xl">
+    <div className="mx-auto max-w-md px-5 py-16 sm:px-6">
+      <h1 className="text-center text-3xl font-bold sm:text-4xl">
         어떤 그날부터 시작할까요?
       </h1>
-      <p className="mt-3 text-center text-sm text-muted">
+      <p className="mt-4 text-center text-base leading-7 text-muted">
         회원가입 없이 바로 체험할 수 있어요. 순서대로 하나씩 열려요.
       </p>
 

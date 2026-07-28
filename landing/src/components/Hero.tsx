@@ -1,47 +1,72 @@
 import Link from "next/link";
-import { EmailForm } from "./EmailForm";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-border">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(60% 50% at 50% 0%, rgba(245,185,66,0.14), transparent 70%)",
-        }}
-      />
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 pb-20 pt-28 text-center sm:pt-36">
-        <span className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted">
-          만약, 그날로 돌아간다면
+    <section className="overflow-hidden border-b border-border bg-surface">
+      <div className="mx-auto flex max-w-6xl flex-col items-center px-5 pb-4 pt-10 text-center sm:px-6 sm:pt-8">
+        <span className="rounded-[8px] bg-[#e8f3ff] px-3 py-1.5 text-sm font-bold text-accent">
+          과거 사건으로 배우는 투자 판단
         </span>
 
-        <h1 className="mt-6 text-4xl font-bold leading-tight tracking-tight text-balance sm:text-5xl">
-          <span className="text-down">IMF 외환위기</span>, 그날의
+        <h1 className="mt-5 max-w-4xl text-3xl font-bold leading-tight tracking-tight text-balance sm:mt-6 sm:text-5xl">
+          IMF 그날로 돌아가
           <br />
-          당신이라면 어떤 선택을 했을까요?
+          다시 투자해보세요
         </h1>
 
-        <p className="mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg">
-          이미 결과를 알고 있는 과거의 사건 속으로 들어가, 모르는 척 다시
-          판단해보세요. 그 순간 왜 사고팔았는지, 어떤 감정이었는지 기록하고
-          복기하며 투자 실력을 쌓는 서비스를 준비하고 있습니다.
+        <p className="mt-4 max-w-2xl text-base leading-7 text-muted sm:mt-5 sm:text-lg sm:leading-8">
+          이미 결과를 아는 사건을 모르는 척 다시 겪으며 매수, 매도, 관망을
+          선택해요. 판단의 이유와 감정을 남기고 내 투자 습관을 복기합니다.
         </p>
 
-        <div className="mt-10 flex flex-col items-center gap-4">
+        <div className="mt-6 flex flex-col items-center gap-3 sm:mt-9">
           <Link
             href="/scenarios"
-            className="rounded-lg bg-accent px-8 py-4 text-base font-semibold text-accent-foreground transition hover:brightness-110"
+            className="rounded-[12px] bg-accent px-8 py-4 text-base font-bold text-accent-foreground shadow-lg shadow-blue-500/20 transition hover:bg-[#1b64da]"
           >
-            지금 체험하기 →
+            회원가입 없이 체험하기
           </Link>
           <span className="text-xs text-muted">회원가입 없이 바로 시작해요</span>
         </div>
 
-        <div className="mt-10 w-full max-w-md border-t border-border pt-8">
-          <p className="text-xs text-muted">또는 정식 출시 소식만 받아보기</p>
-          <div className="mt-3">
-            <EmailForm source="hero" />
+        <div className="mt-6 w-full max-w-4xl overflow-hidden rounded-[8px] border border-border bg-background text-left shadow-[0_24px_80px_rgba(49,130,246,0.14)]">
+          <div className="border-b border-border bg-surface px-5 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold">1997.12.03 IMF 구제금융 신청</p>
+                <p className="mt-1 text-xs text-muted">4일차 · 다음 뉴스 공개 전</p>
+              </div>
+              <span className="rounded-full bg-down/10 px-2.5 py-1 text-xs font-bold text-down">
+                -7.8%
+              </span>
+            </div>
+          </div>
+          <div className="grid gap-0 md:grid-cols-[1.2fr_0.8fr]">
+            <div className="p-4 sm:p-6">
+              <p className="text-sm text-muted">KOSPI 가상 1좌 가격</p>
+              <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">381,200원</p>
+              <div className="mt-4 h-20 rounded-[8px] bg-surface p-3 sm:h-24 sm:p-4">
+                <svg viewBox="0 0 520 140" className="h-full w-full" preserveAspectRatio="none">
+                  <path d="M0 38 C70 28 110 54 170 50 C230 46 260 75 320 82 C385 90 420 108 520 116" fill="none" stroke="var(--down)" strokeWidth="4" strokeLinecap="round" />
+                  <path d="M0 38 C70 28 110 54 170 50 C230 46 260 75 320 82 C385 90 420 108 520 116 L520 140 L0 140 Z" fill="rgba(240,68,82,0.08)" />
+                </svg>
+              </div>
+            </div>
+            <div className="hidden border-t border-border bg-surface p-5 md:block md:border-l md:border-t-0 sm:p-6">
+              <p className="text-sm font-bold">오늘의 판단</p>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                <span className="rounded-[8px] bg-up/10 py-3 text-center text-sm font-bold text-up">매수</span>
+                <span className="rounded-[8px] bg-down/10 py-3 text-center text-sm font-bold text-down">매도</span>
+                <span className="rounded-[8px] bg-surface-2 py-3 text-center text-sm font-bold">관망</span>
+              </div>
+              <div className="mt-5 rounded-[8px] bg-background p-4">
+                <p className="text-xs font-bold text-accent">방금 나온 투자 감정</p>
+                <p className="mt-1 text-sm leading-6 text-muted">
+                  더 떨어질까 봐 팔았다면 패닉셀 가능성이 있어요. 결과보다 판단
+                  과정을 먼저 기록해보세요.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

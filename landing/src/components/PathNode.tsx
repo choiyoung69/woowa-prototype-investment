@@ -71,9 +71,9 @@ export function PathNode({
       className={`flex h-20 w-20 items-center justify-center rounded-full border-2 transition ${
         href
           ? featured
-            ? "border-accent bg-accent text-accent-foreground shadow-lg shadow-accent/20"
-            : "border-accent/60 bg-surface text-accent hover:border-accent"
-          : "border-border bg-surface-2 text-muted"
+            ? "border-accent bg-accent text-accent-foreground shadow-lg shadow-blue-500/20"
+            : "border-accent/30 bg-surface text-accent hover:border-accent hover:bg-[#e8f3ff]"
+          : "border-border bg-surface text-muted"
       }`}
     >
       {href ? icon : <LockIcon />}
@@ -85,7 +85,7 @@ export function PathNode({
       {href ? (
         <Link href={href} className="flex flex-col items-center gap-2">
           {circle}
-          <span className="text-sm font-semibold">{label}</span>
+          <span className="text-sm font-bold">{label}</span>
         </Link>
       ) : (
         <>

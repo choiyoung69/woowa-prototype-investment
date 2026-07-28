@@ -21,12 +21,12 @@ const concepts = [
 
 export function ConceptSection() {
   return (
-    <section className="border-b border-border">
-      <div className="mx-auto max-w-5xl px-6 py-20">
-        <h2 className="text-center text-2xl font-bold sm:text-3xl">
+    <section className="border-b border-border bg-surface">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6">
+        <h2 className="text-center text-3xl font-bold sm:text-4xl">
           체험하고, 기록하고, 다시 이해한다
         </h2>
-        <p className="mt-3 text-center text-sm text-muted sm:text-base">
+        <p className="mt-4 text-center text-base text-muted">
           &ldquo;그날의 나에게&rdquo;를 지탱하는 세 가지 축이에요.
         </p>
 
@@ -34,12 +34,12 @@ export function ConceptSection() {
           {concepts.map((concept) => (
             <div
               key={concept.tag}
-              className="rounded-2xl border border-border bg-surface p-6"
+              className="rounded-[8px] bg-background p-6"
             >
-              <span className="text-xs font-semibold text-accent">
+              <span className="text-xs font-bold text-accent">
                 {concept.tag}
               </span>
-              <h3 className="mt-3 text-lg font-semibold">{concept.title}</h3>
+              <h3 className="mt-3 text-xl font-bold">{concept.title}</h3>
               <p className="mt-3 text-sm leading-6 text-muted">
                 {concept.description}
               </p>

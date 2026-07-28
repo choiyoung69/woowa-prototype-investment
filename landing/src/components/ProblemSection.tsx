@@ -19,12 +19,12 @@ const problems = [
 
 export function ProblemSection() {
   return (
-    <section className="border-b border-border bg-surface/40">
-      <div className="mx-auto max-w-4xl px-6 py-20">
-        <h2 className="text-center text-2xl font-bold sm:text-3xl">
+    <section className="border-b border-border bg-background">
+      <div className="mx-auto max-w-5xl px-5 py-12 sm:px-6 sm:py-10">
+        <h2 className="text-center text-3xl font-bold sm:text-4xl">
           매매를 반복해도 실력이 느는 느낌이 없었다면
         </h2>
-        <p className="mt-3 text-center text-sm text-muted sm:text-base">
+        <p className="mt-4 text-center text-base text-muted">
           기존 모의투자 앱과 경제 뉴스레터, 둘 다 아쉬운 지점이 있었습니다.
         </p>
 
@@ -32,15 +32,15 @@ export function ProblemSection() {
           {problems.map((problem) => (
             <div
               key={problem.label}
-              className="rounded-2xl border border-border bg-surface p-6"
+              className="rounded-[8px] border border-border bg-surface p-6 shadow-sm"
             >
-              <h3 className="text-sm font-semibold text-muted">
+              <h3 className="text-base font-bold">
                 {problem.label}
               </h3>
               <ul className="mt-4 space-y-3">
                 {problem.points.map((point) => (
-                  <li key={point} className="flex gap-2 text-sm leading-6">
-                    <span className="mt-1 text-down">·</span>
+                  <li key={point} className="flex gap-2 text-sm leading-6 text-muted">
+                    <span className="mt-1 text-down">•</span>
                     <span>{point}</span>
                   </li>
                 ))}
@@ -49,7 +49,7 @@ export function ProblemSection() {
           ))}
         </div>
 
-        <p className="mx-auto mt-10 max-w-xl text-center text-sm leading-7 text-muted">
+        <p className="mx-auto mt-10 max-w-xl text-center text-base leading-7 text-muted">
           결과를 아는 과거를, 모르는 척 다시 겪어보며{" "}
           <span className="text-foreground">기록하고 복기한다</span> — 그
           사이의 빈틈을 채우려 합니다.
