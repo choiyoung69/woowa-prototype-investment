@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { EmailForm } from "./EmailForm";
 
 export function Hero() {
@@ -27,11 +28,21 @@ export function Hero() {
           복기하며 투자 실력을 쌓는 서비스를 준비하고 있습니다.
         </p>
 
-        <div className="mt-10 w-full">
-          <EmailForm source="hero" />
-          <p className="mt-3 text-xs text-muted">
-            출시 소식만 보내드려요. 스팸 없음, 언제든 수신거부 가능.
-          </p>
+        <div className="mt-10 flex flex-col items-center gap-4">
+          <Link
+            href="/scenario/covid-crash"
+            className="rounded-lg bg-accent px-8 py-4 text-base font-semibold text-accent-foreground transition hover:brightness-110"
+          >
+            지금 체험하기 →
+          </Link>
+          <span className="text-xs text-muted">회원가입 없이 바로 시작해요</span>
+        </div>
+
+        <div className="mt-10 w-full max-w-md border-t border-border pt-8">
+          <p className="text-xs text-muted">또는 정식 출시 소식만 받아보기</p>
+          <div className="mt-3">
+            <EmailForm source="hero" />
+          </div>
         </div>
       </div>
     </section>
