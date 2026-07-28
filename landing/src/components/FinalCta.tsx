@@ -34,7 +34,7 @@ export function FinalCta() {
         <div className="mt-8 rounded-[16px] border border-border bg-background p-5">
           <p className="text-sm font-black text-muted">출시 알림 받기</p>
           <p className="mt-1 text-sm font-bold text-muted">
-            IMF 이후 금융위기, 코로나 폭락 시나리오가 열리면 알려드릴게요.
+            경제 특화 뉴스, 퀴즈, 커뮤니티, 실시간 모의투자, 랭킹이 열리면 알려드릴게요.
           </p>
           <div className="mt-4">
             <EmailForm source="final_cta" align="center" />
