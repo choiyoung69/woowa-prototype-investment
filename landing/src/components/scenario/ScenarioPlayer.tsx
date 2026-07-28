@@ -115,38 +115,7 @@ function Shell({
 }) {
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto grid max-w-7xl gap-4 px-4 py-4 lg:grid-cols-[240px_1fr] lg:px-6">
-        <aside className="hidden rounded-[16px] border border-border bg-surface p-5 shadow-sm lg:block">
-          <Link href="/" className="text-base font-black">
-            투자체험랩
-          </Link>
-          <nav className="mt-8 space-y-1 text-sm">
-            {["홈", "오늘의 뉴스", "퀴즈", "실시간 투자"].map((item) => (
-              <span
-                key={item}
-                className="block rounded-[10px] px-3 py-2 font-bold text-muted"
-              >
-                {item}
-              </span>
-            ))}
-            <Link
-              href="/scenarios"
-              className="block rounded-[10px] bg-[#e8f3ff] px-3 py-2 font-bold text-accent"
-            >
-              과거로 돌아가기
-            </Link>
-          </nav>
-
-          <div className="mt-28 rounded-[12px] bg-background p-4">
-            <p className="text-xs font-bold text-muted">보유 포인트</p>
-            <p className="mt-2 text-xl font-black text-accent">597P</p>
-            <div className="mt-4 flex justify-between text-xs font-bold text-muted">
-              <span>연속 학습</span>
-              <span className="text-accent">3일</span>
-            </div>
-          </div>
-        </aside>
-
+      <div className="mx-auto max-w-7xl px-4 py-4 lg:px-6">
         <main className="min-w-0 rounded-[16px] border border-border bg-surface p-5 shadow-sm sm:p-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -518,7 +487,7 @@ function MissionStep({
             <MarketStats day={day} cash={cash} positionValue={positionValue} />
           </div>
 
-          <div className="mt-5 grid gap-3 rounded-[12px] border border-border bg-background p-4 xl:grid-cols-[260px_1fr_220px]">
+          <div className="mt-5 grid gap-3 rounded-[12px] border border-border bg-background p-4 2xl:grid-cols-[260px_1fr_220px]">
             <div className="flex items-center text-base font-black">
               오늘의 시장, 어떻게 대응하시겠어요?
             </div>

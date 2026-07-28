@@ -41,7 +41,7 @@ export function TradePanel({
       <div
         className={
           variant === "bar"
-            ? "grid gap-3 lg:grid-cols-3"
+            ? "grid gap-3 md:grid-cols-3"
             : "space-y-3"
         }
       >
