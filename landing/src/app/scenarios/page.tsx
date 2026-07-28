@@ -14,18 +14,20 @@ const marketTiles = [
   { label: "남은 현금", value: "1,000만원", change: "시작 자산", tone: "neutral" },
 ];
 
+const featuredSummary = featuredScenario.knowledge?.summary ?? [];
+
 const steps = [
   {
-    title: "뉴스",
-    description: "당시 정보만",
+    title: "당시 뉴스 확인",
+    description: "결과는 숨기고 공개된 정보만 봅니다.",
   },
   {
-    title: "판단",
-    description: "매수·매도·관망",
+    title: "투자 판단 기록",
+    description: "매수·매도·관망과 이유를 남깁니다.",
   },
   {
-    title: "복기",
-    description: "놓친 신호 확인",
+    title: "결과 복기",
+    description: "내가 놓친 경제 신호를 확인합니다.",
   },
 ];
 
@@ -174,6 +176,35 @@ export default function ScenariosPage() {
             <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
               IMF 외환위기 체험
             </h1>
+            <p className="mt-4 max-w-2xl text-base font-bold leading-7 text-muted">
+              첫 시나리오는 대기업 직장인 입장에서 1997년 11월 19일,
+              IMF 구제금융 요청 직전의 뉴스와 시장 지표를 보고 투자 판단을
+              내려보는 과정입니다.
+            </p>
+
+            <div className="mt-5 rounded-[14px] border border-border bg-background p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-black text-accent">첫 시나리오</p>
+                  <h2 className="mt-1 text-xl font-black">{featuredScenario.title}</h2>
+                </div>
+                <span className="rounded-full bg-[#e8f3ff] px-3 py-1.5 text-xs font-black text-accent">
+                  11-19 시작 · {featuredScenario.startingCash.toLocaleString()}원
+                </span>
+              </div>
+              {featuredSummary.length > 0 && (
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {featuredSummary.map((item) => (
+                    <span
+                      key={item}
+                      className="break-keep rounded-[10px] bg-surface px-2 py-2 text-center text-xs font-black"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {marketTiles.map((tile) => (
