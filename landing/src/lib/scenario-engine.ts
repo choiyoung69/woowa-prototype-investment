@@ -13,6 +13,11 @@ export interface ScenarioDay {
   articles: NewsArticle[];
 }
 
+export interface PivotEvent {
+  date: string;
+  label: string;
+}
+
 export interface Scenario {
   id: string;
   title: string;
@@ -22,6 +27,17 @@ export interface Scenario {
   unitLabel: string;
   startingCash: number;
   days: ScenarioDay[];
+  pivotEvent?: PivotEvent;
+  checkpointAfterDay?: number;
+}
+
+export function formatPivotContext(currentDate: string, pivot: PivotEvent): string {
+  const diffDays = Math.round(
+    (new Date(currentDate).getTime() - new Date(pivot.date).getTime()) / 86_400_000
+  );
+  if (diffDays === 0) return `${pivot.label} 당일`;
+  if (diffDays < 0) return `${pivot.label} ${Math.abs(diffDays)}일 전`;
+  return `${pivot.label} ${diffDays}일 후`;
 }
 
 export interface PortfolioState {

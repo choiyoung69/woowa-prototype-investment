@@ -1,7 +1,8 @@
 import type { Scenario } from "@/lib/scenario-engine";
+import { imfCrisisScenario } from "./imf-crisis";
 import { covidCrashScenario } from "./covid-crash";
 
-export const scenarios: Scenario[] = [covidCrashScenario];
+export const scenarios: Scenario[] = [imfCrisisScenario, covidCrashScenario];
 
 export function getScenario(id: string): Scenario | undefined {
   return scenarios.find((scenario) => scenario.id === id);

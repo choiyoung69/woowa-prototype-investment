@@ -1,16 +1,22 @@
 "use client";
 
-import { useMemo, useReducer } from "react";
+import { useMemo, useReducer, useState } from "react";
 import type {
   PortfolioState,
   Scenario,
   TradeInput,
   TradeLogEntry,
 } from "@/lib/scenario-engine";
-import { applyTrade, portfolioValue, summarize } from "@/lib/scenario-engine";
+import {
+  applyTrade,
+  formatPivotContext,
+  portfolioValue,
+  summarize,
+} from "@/lib/scenario-engine";
 import { PriceSparkline } from "./PriceSparkline";
 import { TradePanel } from "./TradePanel";
 import { NewsFeed } from "./NewsFeed";
+import { CheckpointScreen } from "./CheckpointScreen";
 import { ResultReport } from "./ResultReport";
 
 interface PlayerState {
@@ -65,6 +71,7 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
     tradeLog: [],
     finished: false,
   });
+  const [checkpointDismissed, setCheckpointDismissed] = useState(false);
 
   const currentDay = scenario.days[Math.min(state.dayIndex, scenario.days.length - 1)];
   const previousDay = state.dayIndex > 0 ? scenario.days[state.dayIndex - 1] : null;
@@ -75,6 +82,23 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
     const summary = summarize(state.tradeLog, totalValue, scenario.startingCash);
     return (
       <ResultReport scenario={scenario} tradeLog={state.tradeLog} summary={summary} />
+    );
+  }
+
+  const shouldShowCheckpoint =
+    scenario.checkpointAfterDay !== undefined &&
+    state.dayIndex === scenario.checkpointAfterDay &&
+    !checkpointDismissed;
+
+  if (shouldShowCheckpoint) {
+    const checkpointSummary = summarize(state.tradeLog, totalValue, scenario.startingCash);
+    return (
+      <CheckpointScreen
+        scenario={scenario}
+        dayNumber={state.dayIndex}
+        summary={checkpointSummary}
+        onContinue={() => setCheckpointDismissed(true)}
+      />
     );
   }
 
@@ -100,9 +124,16 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
       <div className="mt-4 flex items-center justify-between text-xs text-muted">
         <span>{scenario.title}</span>
         <span>
-          {dayNumber} / {scenario.days.length}일차 · {currentDay.date}
+          {dayNumber} / {scenario.days.length}일차
         </span>
       </div>
+
+      <p className="mt-3 text-sm text-muted">당신은 {currentDay.date}에 있어요</p>
+      {scenario.pivotEvent && (
+        <p className="mt-1 text-sm font-semibold text-accent">
+          {formatPivotContext(currentDay.date, scenario.pivotEvent)}
+        </p>
+      )}
 
       <p className="mt-4 text-lg font-semibold leading-7">{currentDay.headline}</p>
 
