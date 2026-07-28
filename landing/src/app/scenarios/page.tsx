@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const featuredScenario = scenarios[0];
-const featuredDays = featuredScenario.days.slice(0, 3);
+const featuredDays = featuredScenario.days;
 
 const flowCards = [
   {
@@ -194,62 +194,102 @@ function FlowCard({ card }: { card: (typeof flowCards)[number] }) {
   );
 }
 
-function ScenarioDayCard({
+function ScenarioPathNode({
   day,
   index,
+  isLast,
 }: {
   day: (typeof featuredScenario.days)[number];
   index: number;
+  isLast: boolean;
 }) {
   const unlocked = index === 0;
   const issues = issueFallbacks[index] ?? [];
-  const titles = ["IMF 시작 2일 전", "위기 심화, 시장 불안 확대", "긴급 브리핑, 시장 충격"];
+  const titles = [
+    "IMF 시작 2일 전",
+    "위기 심화, 시장 불안 확대",
+    "긴급 브리핑, 시장 충격",
+    "구제금융 합의 이후",
+    "금 모으기와 반등 신호",
+  ];
   const descriptions = [
     "한국 금융시장 불안이 커지기 시작한 날입니다.",
     "정부 긴급 대응에도 시장 불안이 커졌습니다.",
     "IMF 구제금융 발표를 앞두고 충격이 번집니다.",
+    "구조조정 조건이 시장과 고용에 압박을 줍니다.",
+    "심리가 일부 회복되지만 위기는 아직 끝나지 않았습니다.",
   ];
 
-  const content = (
-    <div className="flex h-full min-h-[360px] flex-col rounded-[14px] border border-border bg-surface p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className={`rounded-[8px] px-3 py-1 text-sm font-black ${unlocked ? "bg-accent text-white" : "bg-[#6b7684] text-white"}`}>
-              {index + 1}일차
-            </span>
-            <span className="text-sm font-black text-muted">{day.date.replaceAll("-", ".")}</span>
+  return (
+    <div className="relative mx-auto flex w-full max-w-3xl justify-center pb-16 last:pb-0">
+      {!isLast && (
+        <div className="absolute left-1/2 top-16 h-full w-1 -translate-x-1/2 rounded-full bg-[#dbe7f9]" />
+      )}
+
+      {unlocked ? (
+        <details className="group relative z-10 w-full max-w-[520px]">
+          <summary className="list-none">
+            <div className="mx-auto flex h-28 w-28 cursor-pointer items-center justify-center rounded-full border-[10px] border-[#dcecff] bg-accent text-3xl font-black text-white shadow-[0_14px_30px_rgba(49,130,246,0.25)] transition group-open:scale-95">
+              {index + 1}
+            </div>
+            <div className="mx-auto mt-3 w-fit rounded-full bg-[#e8f3ff] px-4 py-2 text-sm font-black text-accent">
+              DAY {index + 1} · {day.date.replaceAll("-", ".")}
+            </div>
+          </summary>
+
+          <div className="mt-5 rounded-[16px] border border-border bg-surface p-5 shadow-sm">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-black text-accent">클릭한 날짜 정보</p>
+                <h3 className="mt-2 text-2xl font-black">{titles[index]}</h3>
+                <p className="mt-3 text-sm font-bold leading-6 text-muted">
+                  {descriptions[index]}
+                </p>
+              </div>
+              <div className="hidden h-20 w-20 shrink-0 items-center justify-center rounded-[18px] bg-[#e8f3ff] text-accent sm:flex">
+                <FlowIcon type="trade" />
+              </div>
+            </div>
+
+            <div className="mt-5 border-t border-border pt-4">
+              <p className="text-xs font-black text-muted">예상 주요 이슈</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {issues.slice(0, 3).map((issue) => (
+                  <span key={issue} className="break-keep rounded-full bg-surface-2 px-3 py-1.5 text-xs font-black text-muted">
+                    {issue}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <Link
+              href={`/scenario/${featuredScenario.id}`}
+              className="mt-5 flex h-12 items-center justify-center rounded-[10px] bg-accent text-base font-black text-white transition hover:bg-[#1b64da]"
+            >
+              1일차 시작하기
+            </Link>
           </div>
-          <h3 className="mt-4 text-2xl font-black">{titles[index]}</h3>
-          <p className="mt-3 text-sm font-bold leading-6 text-muted">{descriptions[index]}</p>
+        </details>
+      ) : (
+        <div className="relative z-10 w-full max-w-[520px]">
+          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border-[10px] border-[#edf1f5] bg-surface-2 text-2xl font-black text-muted">
+            {index + 1}
+          </div>
+          <div className="mx-auto mt-3 w-fit rounded-full bg-surface-2 px-4 py-2 text-sm font-black text-muted">
+            DAY {index + 1} · 잠김
+          </div>
+          <div className="mt-5 rounded-[16px] border border-dashed border-border bg-surface/70 p-5 text-center">
+            <p className="text-lg font-black text-muted">
+              {index}일차 완료 후 열려요
+            </p>
+            <p className="mt-2 text-sm font-bold text-muted">
+              이전 날짜를 진행하기 전에는 날짜 정보와 주요 이슈를 공개하지 않습니다.
+            </p>
+          </div>
         </div>
-        <div className={`hidden h-24 w-24 shrink-0 items-center justify-center rounded-[20px] sm:flex ${index === 0 ? "bg-[#e8f3ff] text-accent" : index === 1 ? "bg-[#fff1f3] text-down" : "bg-[#e9fbf2] text-up"}`}>
-          <FlowIcon type={index === 0 ? "trade" : index === 1 ? "news" : "review"} />
-        </div>
-      </div>
-
-      <div className="mt-5 flex-1 border-t border-border pt-4">
-        <p className="text-xs font-black text-muted">예상 주요 이슈</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {issues.slice(0, 3).map((issue) => (
-            <span key={issue} className="break-keep rounded-full bg-surface-2 px-3 py-1.5 text-xs font-black text-muted">
-              {issue}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className={`mt-5 flex h-12 shrink-0 items-center justify-center rounded-[10px] text-base font-black ${unlocked ? "bg-accent text-white" : "bg-surface-2 text-muted"}`}>
-        {unlocked ? "1일차 시작하기" : `${index}일차 완료 후 열려요`}
-      </div>
+      )}
     </div>
   );
-
-  if (unlocked) {
-    return <Link href={`/scenario/${featuredScenario.id}`}>{content}</Link>;
-  }
-
-  return <div aria-disabled="true">{content}</div>;
 }
 
 export default function ScenariosPage() {
@@ -296,10 +336,12 @@ export default function ScenariosPage() {
             <div>
               <p className="text-sm font-black text-accent">오늘 바로 경험할 경제 사건</p>
               <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">
-                IMF 외환위기 체험
+                IMF 외환위기,
+                <br />
+                그날의 정보만 보고 판단해 보세요
               </h1>
               <p className="mt-5 max-w-xl text-lg font-bold leading-8 text-muted">
-                1997년 실제 시장 속으로 들어가 뉴스를 읽고 투자 결정을 내려보세요.
+                결과를 모르는 상태에서 당시 공개된 뉴스와 지표만 확인하고 매수·매도·관망을 선택합니다.
               </p>
 
               <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -325,24 +367,29 @@ export default function ScenariosPage() {
               </div>
             ))}
             <Link
-              href={`/scenario/${featuredScenario.id}`}
+              href="#scenario-path"
               className="flex min-h-16 items-center justify-center gap-3 rounded-[12px] bg-accent px-8 text-lg font-black text-white transition hover:bg-[#1b64da]"
             >
-              1일차 시작하기
+              1일차 정보 보기
               <ArrowIcon />
             </Link>
           </div>
         </section>
 
-        <section className="mt-8">
+        <section id="scenario-path" className="mt-8 scroll-mt-6">
           <h2 className="text-2xl font-black">시나리오 선택</h2>
           <p className="mt-3 text-base font-bold text-muted">
-            첫 시나리오부터 순서대로 진행해 주세요.
+            노드를 눌러 날짜 정보를 확인하세요. 이전 날짜를 완료해야 다음 정보가 열립니다.
           </p>
 
-          <div className="mt-5 grid gap-5 lg:grid-cols-3">
+          <div className="mt-8 rounded-[18px] border border-border bg-[#f7f9fc] px-4 py-8 sm:px-8">
             {featuredDays.map((day, index) => (
-              <ScenarioDayCard key={day.date} day={day} index={index} />
+              <ScenarioPathNode
+                key={day.date}
+                day={day}
+                index={index}
+                isLast={index === featuredDays.length - 1}
+              />
             ))}
           </div>
         </section>
