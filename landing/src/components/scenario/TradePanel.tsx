@@ -27,16 +27,24 @@ export function TradePanel({
   cash,
   positionValue,
   onSubmit,
+  variant = "stack",
 }: {
   cash: number;
   positionValue: number;
   onSubmit: (input: TradeInput) => void;
+  variant?: "stack" | "bar";
 }) {
   const [openAction, setOpenAction] = useState<TradeAction | null>(null);
 
   return (
     <>
-      <div className="space-y-3">
+      <div
+        className={
+          variant === "bar"
+            ? "grid gap-3 lg:grid-cols-3"
+            : "space-y-3"
+        }
+      >
         {(["buy", "sell", "hold"] as TradeAction[]).map((type) => (
           <button
             key={type}

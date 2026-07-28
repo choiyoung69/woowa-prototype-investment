@@ -15,12 +15,11 @@ import {
   portfolioValue,
   summarize,
 } from "@/lib/scenario-engine";
-import { PriceSparkline } from "./PriceSparkline";
 import { TradePanel } from "./TradePanel";
 import { CheckpointScreen } from "./CheckpointScreen";
 import { ResultReport } from "./ResultReport";
 
-type Phase = "intro" | "mission" | "trade";
+type Phase = "intro" | "mission";
 
 interface PlayerState {
   dayIndex: number;
@@ -73,6 +72,34 @@ function formatKrw(value: number) {
 function formatKoreanDate(value: string) {
   const [year, month, day] = value.split("-");
   return `${year}년 ${Number(month)}월 ${Number(day)}일`;
+}
+
+function formatShortDate(value: string) {
+  const [, month, day] = value.split("-");
+  return `${Number(month)}월 ${Number(day)}일`;
+}
+
+function getDayName(value: string) {
+  return ["일", "월", "화", "수", "목", "금", "토"][new Date(value).getDay()];
+}
+
+function changeFromOpen(day: ScenarioDay) {
+  const open = day.open ?? day.price;
+  const diff = day.price - open;
+  const pct = open === 0 ? 0 : (diff / open) * 100;
+  return { open, diff, pct };
+}
+
+function makeSessionPrices(day: ScenarioDay) {
+  const { open } = changeFromOpen(day);
+  const close = day.price;
+  const gap = close - open;
+  return Array.from({ length: 18 }, (_, index) => {
+    const progress = index / 17;
+    const wave = Math.sin(progress * Math.PI * 3) * Math.abs(gap) * 0.08;
+    const shake = ((index % 4) - 1.5) * Math.abs(gap) * 0.025;
+    return Math.round(open + gap * progress + wave + shake);
+  });
 }
 
 function Shell({
@@ -130,8 +157,7 @@ function Shell({
               </p>
               <h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
                 {phase === "intro" && "시나리오 준비"}
-                {phase === "mission" && "오늘의 학습 미션"}
-                {phase === "trade" && "투자 결정하기"}
+                {phase === "mission" && "오늘의 시장 판단"}
               </h1>
             </div>
             <Link
@@ -142,10 +168,12 @@ function Shell({
             </Link>
           </div>
 
-          <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-[1fr_260px]">
-            <ProgressPanel scenario={scenario} dayIndex={dayIndex} />
-            <PortfolioMini value={portfolioValueText} />
-          </div>
+          {phase === "intro" && (
+            <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-[1fr_260px]">
+              <ProgressPanel scenario={scenario} dayIndex={dayIndex} />
+              <PortfolioMini value={portfolioValueText} />
+            </div>
+          )}
 
           <div className="mt-6">{children}</div>
         </main>
@@ -295,134 +323,339 @@ function IntroStep({
   );
 }
 
-function MissionStep({
+function ScenarioTimeline({
   scenario,
-  day,
-  prices,
-  onStart,
+  dayIndex,
 }: {
   scenario: Scenario;
-  day: ScenarioDay;
-  prices: number[];
-  onStart: () => void;
+  dayIndex: number;
 }) {
   return (
-    <div className="space-y-4">
-      <section className="rounded-[12px] border border-border bg-surface p-5">
-        <p className="text-sm font-bold text-accent">2. 실제 시나리오</p>
-        <h2 className="mt-2 text-2xl font-black">
-          오늘은 {formatKoreanDate(day.date)}입니다
-        </h2>
-        <p className="mt-3 text-sm font-bold leading-6 text-muted">
-          {day.headline}
+    <aside className="rounded-[12px] border border-border bg-surface p-5">
+      <p className="text-sm font-black">1단계 ({scenario.days.length}일)</p>
+      <p className="mt-1 text-sm font-bold text-muted">IMF 외환위기 (1997)</p>
+      <div className="mt-6 space-y-5">
+        {scenario.days.map((day, index) => {
+          const active = index === dayIndex;
+          const locked = index > dayIndex;
+          return (
+            <div key={day.date} className="flex gap-3">
+              <div
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-black ${
+                  active
+                    ? "bg-accent text-white"
+                    : "bg-surface-2 text-muted"
+                }`}
+              >
+                {index + 1}
+              </div>
+              <div className="min-w-0">
+                <p className={`text-sm font-black ${active ? "text-accent" : "text-muted"}`}>
+                  DAY {index + 1}
+                </p>
+                <p className="mt-0.5 text-xs font-bold text-muted">
+                  {formatShortDate(day.date)} ({getDayName(day.date)})
+                  {locked ? " · 잠김" : ""}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+        <div className="flex gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-sm font-black text-muted">
+            ✓
+          </div>
+          <div>
+            <p className="text-sm font-black text-muted">결과 확인</p>
+            <p className="mt-0.5 text-xs font-bold text-muted">선택 복기</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function MarketChart({ day }: { day: ScenarioDay }) {
+  const chartPrices = makeSessionPrices(day);
+  const min = Math.min(...chartPrices);
+  const max = Math.max(...chartPrices);
+  const width = 720;
+  const height = 260;
+  const padX = 18;
+  const padY = 24;
+  const range = max - min || 1;
+  const stepX = (width - padX * 2) / (chartPrices.length - 1);
+  const toY = (price: number) =>
+    padY + (height - padY * 2) - ((price - min) / range) * (height - padY * 2);
+  const linePoints = chartPrices.map(
+    (price, index) => `${padX + index * stepX},${toY(price)}`
+  );
+  const areaPoints = [
+    `${padX},${height - padY}`,
+    ...linePoints,
+    `${width - padX},${height - padY}`,
+  ];
+  const { diff, pct } = changeFromOpen(day);
+  const trendUp = diff >= 0;
+  const color = trendUp ? "var(--up)" : "var(--down)";
+
+  return (
+    <div className="min-w-0">
+      <div className="flex flex-wrap items-end gap-3">
+        <div>
+          <p className="text-sm font-black text-muted">{scenarioMarketName}</p>
+          <p className="mt-1 text-4xl font-black tracking-tight">
+            {day.price.toLocaleString()}
+          </p>
+        </div>
+        <p className={`pb-1 text-lg font-black ${trendUp ? "text-up" : "text-down"}`}>
+          {diff > 0 ? "+" : ""}
+          {diff.toLocaleString()} ({pct > 0 ? "+" : ""}
+          {pct.toFixed(2)}%)
         </p>
-      </section>
+      </div>
 
-      <section className="grid gap-4 rounded-[12px] border border-border bg-surface p-5 lg:grid-cols-[1fr_280px]">
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p className="text-sm font-black text-muted">주식 창</p>
-              <h2 className="mt-1 text-2xl font-black">{scenario.unitLabel}</h2>
-            </div>
-            <div className="rounded-full bg-[#e8f3ff] px-3 py-1.5 text-xs font-black text-accent">
-              {scenario.pivotEvent && formatPivotContext(day.date, scenario.pivotEvent)}
-            </div>
-          </div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <MetricTile label="현재가" value={`${day.price.toLocaleString()}원`} />
-            <MetricTile label="보유 현금" value={formatKrw(scenario.startingCash)} />
-            <MetricTile label="판단 기준" value="뉴스·지표" />
-          </div>
-        </div>
-        <PriceSparkline prices={prices} />
-      </section>
-
-      <section className="overflow-hidden rounded-[12px] border border-border bg-surface">
-        <div className="border-b border-border px-5 py-4">
-          <p className="text-sm font-black text-accent">3. 당시 뉴스</p>
-          <h2 className="mt-1 text-xl font-black">오늘 공개된 정보</h2>
-        </div>
-        {day.articles.map((article, index) => (
-          <article
-            key={`${article.source}-${article.title}`}
-            className="flex gap-4 border-b border-border p-5 last:border-b-0"
+      <div className="mt-4 flex max-w-xs rounded-full bg-background p-1 text-xs font-black text-muted">
+        {["1일", "1주", "1개월", "3개월", "1년"].map((label, index) => (
+          <span
+            key={label}
+            className={`flex-1 rounded-full px-3 py-2 text-center ${
+              index === 0 ? "bg-[#e8f3ff] text-accent" : ""
+            }`}
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-surface-2 text-sm font-black text-accent">
+            {label}
+          </span>
+        ))}
+      </div>
+
+      <div className="mt-4 rounded-[12px] bg-surface">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio="none"
+          className="h-[260px] w-full"
+          role="img"
+          aria-label="오늘 시장 가격 흐름"
+        >
+          {[0, 1, 2, 3, 4].map((line) => {
+            const y = padY + ((height - padY * 2) / 4) * line;
+            return (
+              <line
+                key={line}
+                x1={padX}
+                x2={width - padX}
+                y1={y}
+                y2={y}
+                stroke="var(--border)"
+                strokeWidth={1}
+              />
+            );
+          })}
+          <defs>
+            <linearGradient id="market-gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity={0.24} />
+              <stop offset="100%" stopColor={color} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <polygon points={areaPoints.join(" ")} fill="url(#market-gradient)" />
+          <polyline
+            points={linePoints.join(" ")}
+            fill="none"
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={3}
+          />
+        </svg>
+        <div className="grid grid-cols-4 px-4 pb-2 text-xs font-bold text-muted">
+          <span>09:00</span>
+          <span>11:00</span>
+          <span>13:00</span>
+          <span className="text-right">15:00</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const scenarioMarketName = "코스피 KOSPI";
+
+function MarketStats({
+  day,
+  cash,
+  positionValue,
+}: {
+  day: ScenarioDay;
+  cash: number;
+  positionValue: number;
+}) {
+  const { open } = changeFromOpen(day);
+  const low = Math.min(...makeSessionPrices(day));
+  const high = Math.max(...makeSessionPrices(day));
+  const fxRate = Math.round(day.price * 0.154 + 5);
+  const foreignFlow = Math.round((open - day.price) * 2.7);
+
+  return (
+    <div className="grid gap-px overflow-hidden rounded-[12px] border border-border bg-border sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+      <MetricTile label="시가" value={open.toLocaleString()} />
+      <MetricTile label="고가" value={high.toLocaleString()} />
+      <MetricTile label="저가" value={low.toLocaleString()} />
+      <MetricTile label="원/달러 환율" value={`${fxRate.toLocaleString()}원`} />
+      <MetricTile label="외국인 순매도" value={`-${foreignFlow.toLocaleString()}억원`} tone="down" />
+      <MetricTile label="보유 현금" value={formatKrw(cash)} />
+      <MetricTile label="포지션" value={formatKrw(positionValue)} />
+      <MetricTile label="판단 기준" value="뉴스·지표" />
+    </div>
+  );
+}
+
+function NewsSummary({ day }: { day: ScenarioDay }) {
+  return (
+    <section className="rounded-[12px] border border-border bg-surface p-5">
+      <h2 className="text-xl font-black">뉴스 요약</h2>
+      <div className="mt-4 space-y-3">
+        {day.articles.map((article, index) => (
+          <div key={article.title} className="flex gap-3 rounded-[12px] bg-background p-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[#e8f3ff] text-sm font-black text-accent">
               {index + 1}
             </div>
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="text-xs font-bold text-muted">{article.source}</p>
-                <p className="text-xs text-muted">{day.date}</p>
-              </div>
-              <h3 className="mt-1 text-base font-black leading-6">{article.title}</h3>
-              <p className="mt-1 text-sm leading-6 text-muted">{article.summary}</p>
+              <p className="line-clamp-1 text-sm font-black">{article.title}</p>
+              <p className="mt-1 line-clamp-2 text-sm font-bold leading-6 text-muted">
+                {article.summary}
+              </p>
             </div>
-          </article>
+          </div>
         ))}
-      </section>
-
-      <button
-        type="button"
-        onClick={onStart}
-        className="w-full rounded-[12px] bg-accent px-4 py-4 text-sm font-black text-white transition hover:bg-[#1b64da] sm:px-5 sm:text-base"
-      >
-        투자 결정하러 가기
-      </button>
-    </div>
+      </div>
+    </section>
   );
 }
 
-function MetricTile({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-[12px] bg-background p-4">
-      <p className="text-xs font-black text-muted">{label}</p>
-      <p className="mt-2 truncate text-lg font-black">{value}</p>
-    </div>
-  );
-}
-
-function TradeStep({
+function MissionStep({
+  scenario,
+  day,
+  dayIndex,
   cash,
   positionValue,
-  totalValue,
   onSubmit,
 }: {
+  scenario: Scenario;
+  day: ScenarioDay;
+  dayIndex: number;
   cash: number;
   positionValue: number;
-  totalValue: number;
   onSubmit: (input: TradeInput) => void;
 }) {
   return (
-    <div className="grid gap-5 lg:grid-cols-[1fr_1.2fr]">
-      <section className="rounded-[12px] border border-border bg-surface p-5">
-        <p className="text-sm font-bold text-accent">4. 투자 결정</p>
-        <h2 className="mt-2 text-2xl font-black">오늘의 선택을 남겨주세요</h2>
-        <p className="mt-2 text-sm leading-6 text-muted">
-          매수, 매도, 관망 중 하나를 선택하면 이유와 감정을 기록하고 다음 날로
-          넘어갑니다.
-        </p>
+    <div className="grid gap-4 xl:grid-cols-[220px_1fr]">
+      <ScenarioTimeline scenario={scenario} dayIndex={dayIndex} />
 
-        <div className="mt-5 grid grid-cols-3 gap-3 rounded-[12px] bg-background p-4 text-center text-sm">
-          <div>
-            <p className="text-xs font-bold text-muted">현금</p>
-            <p className="mt-1 font-black">{formatKrw(cash)}</p>
+      <div className="min-w-0 space-y-4">
+        <section className="rounded-[16px] border border-border bg-surface p-5 shadow-sm sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-black text-accent">DAY {dayIndex + 1}</p>
+              <h2 className="mt-1 text-3xl font-black tracking-tight">
+                {formatKoreanDate(day.date)} ({getDayName(day.date)})
+              </h2>
+              <p className="mt-2 text-sm font-bold text-muted">
+                공개된 정보만 보고 시장을 판단하고, 투자 전략을 선택하세요.
+              </p>
+            </div>
+            <span className="rounded-full bg-background px-3 py-2 text-xs font-black text-muted">
+              {scenario.pivotEvent && formatPivotContext(day.date, scenario.pivotEvent)}
+            </span>
           </div>
-          <div>
-            <p className="text-xs font-bold text-muted">포지션</p>
-            <p className="mt-1 font-black">{formatKrw(positionValue)}</p>
+
+          <div className="mt-6 grid gap-5 xl:grid-cols-[1fr_360px]">
+            <MarketChart day={day} />
+            <MarketStats day={day} cash={cash} positionValue={positionValue} />
           </div>
-          <div>
-            <p className="text-xs font-bold text-muted">총 자산</p>
-            <p className="mt-1 font-black">{formatKrw(totalValue)}</p>
+
+          <div className="mt-5 grid gap-3 rounded-[12px] border border-border bg-background p-4 xl:grid-cols-[260px_1fr_220px]">
+            <div className="flex items-center text-base font-black">
+              오늘의 시장, 어떻게 대응하시겠어요?
+            </div>
+            <TradePanel
+              cash={cash}
+              positionValue={positionValue}
+              onSubmit={onSubmit}
+              variant="bar"
+            />
+            <div className="rounded-[12px] bg-surface p-4">
+              <p className="text-xs font-black text-muted">보유 현금</p>
+              <p className="mt-2 text-lg font-black">{formatKrw(cash)}</p>
+            </div>
           </div>
+        </section>
+
+        <div className="grid gap-4 xl:grid-cols-[1.35fr_1fr]">
+          <section className="overflow-hidden rounded-[12px] border border-border bg-surface">
+            <div className="border-b border-border px-5 py-4">
+              <h2 className="text-xl font-black">오늘의 주요 뉴스</h2>
+              <div className="mt-3 flex gap-2 text-xs font-black text-muted">
+                {["전체", "경제", "금융", "기업", "국제"].map((tab, index) => (
+                  <span
+                    key={tab}
+                    className={`rounded-full px-3 py-1.5 ${
+                      index === 0 ? "bg-[#e8f3ff] text-accent" : "bg-background"
+                    }`}
+                  >
+                    {tab}
+                  </span>
+                ))}
+              </div>
+            </div>
+            {day.articles.map((article, index) => (
+              <article
+                key={`${article.source}-${article.title}`}
+                className="grid gap-3 border-b border-border p-5 last:border-b-0 sm:grid-cols-[96px_1fr_48px]"
+              >
+                <div>
+                  <p className="text-xs font-black text-accent">{article.source}</p>
+                  <p className="mt-1 text-xs font-bold text-muted">
+                    {index === 0 ? "09:30" : "10:15"}
+                  </p>
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-base font-black leading-6">{article.title}</h3>
+                  <p className="mt-1 text-sm font-bold leading-6 text-muted">
+                    {article.summary}
+                  </p>
+                </div>
+                <span className="h-fit rounded-full bg-background px-2 py-1 text-center text-xs font-black text-muted">
+                  {index === 0 ? "경제" : "금융"}
+                </span>
+              </article>
+            ))}
+          </section>
+
+          <NewsSummary day={day} />
         </div>
-      </section>
+      </div>
+    </div>
+  );
+}
 
-      <section className="rounded-[12px] border border-border bg-surface p-5">
-        <TradePanel cash={cash} positionValue={positionValue} onSubmit={onSubmit} />
-      </section>
+function MetricTile({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string;
+  tone?: "up" | "down";
+}) {
+  return (
+    <div className="bg-surface p-4">
+      <p className="text-xs font-black text-muted">{label}</p>
+      <p
+        className={`mt-2 truncate text-lg font-black ${
+          tone === "up" ? "text-up" : tone === "down" ? "text-down" : ""
+        }`}
+      >
+        {value}
+      </p>
     </div>
   );
 }
@@ -439,9 +672,6 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
   const [phase, setPhase] = useState<Phase>("intro");
 
   const currentDay = scenario.days[Math.min(state.dayIndex, scenario.days.length - 1)];
-  const firstDayOpen = scenario.days[0]?.open;
-  const closePrices = scenario.days.slice(0, state.dayIndex + 1).map((d) => d.price);
-  const pricesSoFar = firstDayOpen !== undefined ? [firstDayOpen, ...closePrices] : closePrices;
   const totalValue = portfolioValue(state.portfolio, currentDay.price);
   const positionValue = state.portfolio.units * currentDay.price;
 
@@ -484,16 +714,9 @@ export function ScenarioPlayer({ scenario }: { scenario: Scenario }) {
         <MissionStep
           scenario={scenario}
           day={currentDay}
-          prices={pricesSoFar}
-          onStart={() => setPhase("trade")}
-        />
-      )}
-
-      {phase === "trade" && (
-        <TradeStep
+          dayIndex={state.dayIndex}
           cash={state.portfolio.cash}
           positionValue={positionValue}
-          totalValue={totalValue}
           onSubmit={(input) => {
             dispatch({ type: "TRADE", input });
             setPhase("mission");
