@@ -88,8 +88,8 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="rounded-[14px] border border-border bg-[#191f28] p-5 text-white shadow-[0_24px_80px_rgba(25,31,40,0.18)]">
-            <p className="text-sm font-black text-white/60">오늘 해야 할 일</p>
+          <div className="rounded-[14px] border border-border bg-surface p-5 shadow-[0_24px_80px_rgba(49,130,246,0.08)]">
+            <p className="text-sm font-black text-muted">오늘 해야 할 일</p>
             <div className="mt-5 space-y-3">
               {[
                 ["1", "뉴스 읽기", "결과를 모른 채 그날 정보만 확인"],
@@ -97,13 +97,13 @@ export function Hero() {
                 ["3", "이유 남기기", "왜 그렇게 봤는지 짧게 기록"],
                 ["4", "결과로 복기", "내가 놓친 신호 확인"],
               ].map(([step, title, body]) => (
-                <div key={step} className="flex gap-3 rounded-[12px] bg-white/10 p-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-[#191f28]">
+                <div key={step} className="flex gap-3 rounded-[12px] bg-background p-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-black text-accent-foreground">
                     {step}
                   </span>
                   <div>
                     <p className="font-black">{title}</p>
-                    <p className="mt-1 text-sm font-bold text-white/60">{body}</p>
+                    <p className="mt-1 text-sm font-bold text-muted">{body}</p>
                   </div>
                 </div>
               ))}

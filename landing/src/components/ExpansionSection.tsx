@@ -32,24 +32,24 @@ export function ExpansionSection() {
     <section className="border-b border-border bg-background">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6">
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="rounded-[18px] bg-[#191f28] p-6 text-white sm:p-8">
-            <p className="text-sm font-black text-white/60">확장 방향</p>
-            <h2 className="mt-4 break-keep text-3xl font-black leading-tight sm:text-4xl">
+          <div className="rounded-[18px] border border-[#d6eaff] bg-[#e8f3ff] p-6 sm:p-8">
+            <p className="text-sm font-black text-accent">확장 방향</p>
+            <h2 className="mt-4 break-keep text-3xl font-black leading-tight text-foreground sm:text-4xl">
               IMF 체험 다음은
               <br />
               매일 보는 경제 앱
             </h2>
-            <p className="mt-4 break-keep text-base font-bold leading-7 text-white/60">
+            <p className="mt-4 break-keep text-base font-bold leading-7 text-muted">
               메인은 경제 특화 뉴스입니다. 뉴스에서 퀴즈와 판단으로 넘어가고,
               커뮤니티와 랭킹으로 다시 들어올 이유를 만듭니다.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-2">
               {loop.map((item, index) => (
                 <div key={item} className="flex items-center gap-2">
-                  <span className="rounded-full bg-white px-4 py-2 text-sm font-black text-[#191f28]">
+                  <span className="rounded-full bg-white px-4 py-2 text-sm font-black text-accent shadow-sm">
                     {item}
                   </span>
-                  {index < loop.length - 1 && <span className="text-white/35">→</span>}
+                  {index < loop.length - 1 && <span className="text-accent/40">→</span>}
                 </div>
               ))}
             </div>
