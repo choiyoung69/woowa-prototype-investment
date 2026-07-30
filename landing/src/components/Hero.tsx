@@ -34,7 +34,9 @@ export function Hero() {
             왜 만들었는지 보기
           </Link>
         </div>
-        <span className="mt-3 text-xs font-bold text-muted">회원가입 없이 MVP 바로 체험</span>
+        <span className="mt-3 text-xs font-bold text-muted">
+          회원가입 없이 MVP 바로 체험 · PC와 모바일 모두에서 확인할 수 있어요
+        </span>
 
         <div className="mt-8 grid w-full max-w-5xl gap-4 text-left md:grid-cols-[1.2fr_0.8fr]">
           <HeroLiveDemo />

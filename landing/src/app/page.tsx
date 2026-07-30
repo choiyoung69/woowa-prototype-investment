@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { ProblemSection } from "@/components/ProblemSection";
 import { ConceptSection } from "@/components/ConceptSection";
-import { AppPreviewSection } from "@/components/AppPreviewSection";
+import { ScrollFeatureShowcase } from "@/components/ScrollFeatureShowcase";
 import { ExpansionSection } from "@/components/ExpansionSection";
 import { ComparisonSection } from "@/components/ComparisonSection";
 import { FinalCta } from "@/components/FinalCta";
@@ -16,7 +16,7 @@ export default function Home() {
         <Hero />
         <ProblemSection />
         <ConceptSection />
-        <AppPreviewSection />
+        <ScrollFeatureShowcase />
         <ExpansionSection />
         <ComparisonSection />
         <FinalCta />
