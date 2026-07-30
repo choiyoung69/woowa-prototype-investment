@@ -1,8 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { demoFrames as frames } from "./demoFrames";
+
+function progressToIndex(progress: number) {
+  return Math.min(frames.length - 1, Math.max(0, Math.floor(progress * frames.length)));
+}
 
 export function ScrollFeatureShowcase() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -13,9 +17,19 @@ export function ScrollFeatureShowcase() {
     offset: ["start start", "end end"],
   });
 
+  // useMotionValueEvent only fires on scroll, so if the page loads (or a
+  // hash link jumps straight) into the middle of this section, the frame
+  // shown would stay stuck at index 0 until the next scroll tick. Sync
+  // once after mount against whatever the scroll position already is.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setActive(progressToIndex(scrollYProgress.get()));
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [scrollYProgress]);
+
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const index = Math.min(frames.length - 1, Math.floor(latest * frames.length));
-    setActive(Math.max(0, index));
+    setActive(progressToIndex(latest));
   });
 
   return (
