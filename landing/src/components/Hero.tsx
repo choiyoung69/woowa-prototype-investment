@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HeroLiveDemo } from "./HeroLiveDemo";
 
 export function Hero() {
   return (
@@ -36,57 +37,7 @@ export function Hero() {
         <span className="mt-3 text-xs font-bold text-muted">회원가입 없이 MVP 바로 체험</span>
 
         <div className="mt-8 grid w-full max-w-5xl gap-4 text-left md:grid-cols-[1.2fr_0.8fr]">
-          <div className="overflow-hidden rounded-[14px] border border-border bg-background shadow-[0_24px_80px_rgba(49,130,246,0.14)]">
-            <div className="border-b border-border bg-surface px-5 py-4">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-sm font-black">DAY 1 · 1997년 11월 19일</p>
-                  <p className="mt-1 text-xs font-bold text-muted">IMF 구제금융 요청 2일 전</p>
-                </div>
-                <span className="rounded-full bg-down/10 px-2.5 py-1 text-xs font-black text-down">
-                  KOSPI -4.34%
-                </span>
-              </div>
-            </div>
-            <div className="p-4 sm:p-6">
-              <p className="text-sm font-black text-muted">당시 공개된 정보</p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                {["한보그룹 부도", "환율 급등", "외국인 순매도"].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-[10px] bg-surface px-3 py-3 text-center text-sm font-black"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-5 rounded-[12px] bg-surface p-4">
-                <div className="flex flex-wrap items-end gap-3">
-                  <div>
-                    <p className="text-sm font-black text-muted">코스피 KOSPI</p>
-                    <p className="mt-1 text-4xl font-black tracking-tight">689.12</p>
-                  </div>
-                  <p className="pb-1 text-lg font-black text-down">-31.29 (-4.34%)</p>
-                </div>
-                <div className="mt-4 h-32 rounded-[10px] bg-background p-3">
-                  <svg viewBox="0 0 640 180" className="h-full w-full" preserveAspectRatio="none">
-                    <path
-                      d="M0 44 L30 22 L60 55 L90 82 L120 50 L150 93 L180 118 L210 72 L240 102 L270 150 L300 118 L330 86 L360 126 L390 154 L420 106 L450 138 L480 160 L510 126 L540 146 L570 170 L600 138 L640 112"
-                      fill="none"
-                      stroke="var(--down)"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M0 44 L30 22 L60 55 L90 82 L120 50 L150 93 L180 118 L210 72 L240 102 L270 150 L300 118 L330 86 L360 126 L390 154 L420 106 L450 138 L480 160 L510 126 L540 146 L570 170 L600 138 L640 112 L640 180 L0 180 Z"
-                      fill="rgba(240,68,82,0.10)"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
+          <HeroLiveDemo />
 
           <div className="rounded-[14px] border border-border bg-surface p-5 shadow-[0_24px_80px_rgba(49,130,246,0.08)]">
             <p className="text-sm font-black text-muted">오늘 해야 할 일</p>
