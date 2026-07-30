@@ -5,7 +5,7 @@ export function Header() {
     <header className="sticky top-0 z-10 border-b border-border bg-surface/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-6">
         <Link href="/" className="text-[15px] font-bold tracking-tight">
-          그날의 나에게
+          오늘의 경제
         </Link>
         <div className="flex items-center gap-2">
           <Link

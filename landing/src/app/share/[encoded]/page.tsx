@@ -12,11 +12,11 @@ export async function generateMetadata({
   const result = decodeShareResult(encoded);
   const title = result
     ? `${result.scenarioTitle} 결과: ${result.returnPct >= 0 ? "+" : ""}${result.returnPct.toFixed(1)}%`
-    : "그날의 나에게";
+    : "오늘의 경제";
 
   return {
-    title: `${title} | 그날의 나에게`,
-    description: "과거로 돌아가 다시 투자해보는 서비스, 그날의 나에게",
+    title: `${title} | 오늘의 경제`,
+    description: "과거로 돌아가 다시 투자해보는 서비스, 오늘의 경제",
   };
 }
 

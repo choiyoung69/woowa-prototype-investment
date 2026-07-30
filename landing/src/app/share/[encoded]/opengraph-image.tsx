@@ -14,7 +14,7 @@ export default async function Image({
   const { encoded } = await params;
   const result = decodeShareResult(encoded);
 
-  const scenarioTitle = result?.scenarioTitle ?? "그날의 나에게";
+  const scenarioTitle = result?.scenarioTitle ?? "오늘의 경제";
   const returnPct = result?.returnPct ?? 0;
   const isPositive = returnPct >= 0;
   const topTag = result?.topTag ? getEmotionTag(result.topTag) : null;
@@ -51,7 +51,7 @@ export default async function Image({
         }}
       >
         <div style={{ display: "flex", fontSize: 28, color: "#9498a3" }}>
-          그날의 나에게 · {scenarioTitle}
+          오늘의 경제 · {scenarioTitle}
         </div>
         <div
           style={{

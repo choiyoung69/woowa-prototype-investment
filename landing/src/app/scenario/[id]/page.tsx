@@ -16,8 +16,8 @@ export async function generateMetadata({
   const scenario = getScenario(id);
   return {
     title: scenario
-      ? `${scenario.title} 시나리오 | 그날의 나에게`
-      : "시나리오를 찾을 수 없음 | 그날의 나에게",
+      ? `${scenario.title} 시나리오 | 오늘의 경제`
+      : "시나리오를 찾을 수 없음 | 오늘의 경제",
   };
 }
 

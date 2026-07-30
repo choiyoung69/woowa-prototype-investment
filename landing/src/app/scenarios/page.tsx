@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { scenarios } from "@/data/scenarios";
 
 export const metadata: Metadata = {
-  title: "시나리오 선택 | 그날의 나에게",
+  title: "시나리오 선택 | 오늘의 경제",
 };
 
 const featuredScenario = scenarios[0];

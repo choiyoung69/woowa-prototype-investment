@@ -1,4 +1,3 @@
-const mvpSteps = ["뉴스 확인", "시장 판단", "선택 기록", "결과 복기"];
 const laterFeatures = ["경제 뉴스", "퀴즈", "커뮤니티", "실시간 투자", "랭킹"];
 
 export function ConceptSection() {
@@ -34,15 +33,6 @@ export function ConceptSection() {
               먼저 판단 학습이 재방문으로 이어지는지 확인한 뒤 확장합니다.
             </p>
           </div>
-        </div>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-4">
-          {mvpSteps.map((step, index) => (
-            <div key={step} className="rounded-[14px] border border-border bg-background p-5">
-              <p className="text-sm font-black text-accent">{index + 1}</p>
-              <p className="mt-2 text-xl font-black">{step}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>

@@ -1,12 +1,10 @@
 type Cell = boolean | "partial";
 
 const rows: { label: string; app: Cell; newsletter: Cell; us: Cell }[] = [
-  { label: "뉴스를 투자 판단으로 연결", app: "partial", newsletter: "partial", us: true },
   { label: "과거 실제 위기 속으로 회귀", app: false, newsletter: false, us: true },
   { label: "매수·매도·관망 선택", app: true, newsletter: false, us: true },
   { label: "판단 이유 기록", app: false, newsletter: false, us: true },
   { label: "실제 결과 기반 복기", app: false, newsletter: "partial", us: true },
-  { label: "현재 뉴스와 과거 신호 연결", app: false, newsletter: "partial", us: true },
 ];
 
 function CellIcon({ value }: { value: Cell }) {
@@ -45,7 +43,7 @@ export function ComparisonSection() {
                   뉴스·퀴즈 서비스
                 </th>
                 <th className="px-4 py-3 text-center font-black text-accent">
-                  그날의 나에게
+                  오늘의 경제
                 </th>
               </tr>
             </thead>

@@ -31,20 +31,7 @@ export function ProblemSection() {
           정보를 보고 어떤 판단을 내려야 하는지 모른다는 점이었습니다.
         </p>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-3">
-          {[
-            ["10명", "주식 관심자 개별 인터뷰"],
-            ["핵심 문제", "정보를 판단으로 연결하지 못함"],
-            ["반응 전환", "직접 판단하는 학습으로 설명하자 긍정 반응"],
-          ].map(([value, label]) => (
-            <div key={value} className="rounded-[12px] bg-surface p-5 text-center shadow-sm">
-              <p className="text-3xl font-black text-accent">{value}</p>
-              <p className="mt-2 break-keep text-sm font-bold text-muted">{label}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {problems.map((problem) => (
             <div
               key={problem.label}
@@ -64,10 +51,6 @@ export function ProblemSection() {
             </div>
           ))}
         </div>
-
-        <p className="mx-auto mt-8 max-w-2xl rounded-[12px] bg-[#e8f3ff] p-5 text-center text-base font-black leading-7 text-accent">
-          그래서 MVP는 요약 서비스가 아니라, 정보를 보고 선택하고 이유를 남긴 뒤 실제 결과로 복기하는 경험부터 검증합니다.
-        </p>
       </div>
     </section>
   );
